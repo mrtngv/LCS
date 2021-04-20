@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class OfficeController {
@@ -33,7 +33,7 @@ public class OfficeController {
     }
 
     @PutMapping("/{officeID}")
-    public void updateOffice(@PathVariable("officeID") Long id, @RequestParam(required = false) String location,@RequestParam(required = false) String city) {
-        officeService.updateOffice(id, location, city);
+    public void updateOffice(@PathVariable("officeID") Long id, @RequestBody String location) {
+        officeService.updateOffice(id, location);
     }
 }
