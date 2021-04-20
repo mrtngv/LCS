@@ -40,21 +40,16 @@ public class OfficeService {
     }
 
     @Transactional
-    public void updateOffice(Long id, String location, String city) {
+    public void updateOffice(Long id, String location) {
         Office office = officeRepo.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Office does not exist"));
 
-        if (location != null && location.length()>0 & !Objects.equals(office.getLocation(), location)) {
-            Optional<Office> locationFound = officeRepo.findByLocation(location);
-
-            if (locationFound.isPresent()) {
-                throw new IllegalStateException("An office with that location already exists");
-            }
+        if (location != null && location.length()>0 && !Objects.equals(office.getLocation(), location)) {
             office.setLocation(location);
+            officeRepo.save(office);
         }
-
-        if (city != null && city.length()>0) {
-            office.setCity(city);
+        else {
+            throw new IllegalStateException("Requested values are wrong! Location:" + location);
         }
     }
 }
