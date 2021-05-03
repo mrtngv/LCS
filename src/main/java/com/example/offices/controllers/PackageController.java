@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = {"https://logistic-company-cscb025.herokuapp.com", "http://localhost:3000"})
 @RestController
-@RequestMapping("/api/packagesInfo")
+@RequestMapping("/api/packages")
 public class PackageController {
     private final PackageService packageService;
     @Autowired
@@ -17,9 +18,14 @@ public class PackageController {
         this.packageService = packageService;
     }
 
-    @GetMapping("/packages")
+    @GetMapping
     public List<Package> getPackages() {
         return packageService.getPackages();
+    }
+
+    @GetMapping("/{packageID}")
+    public Optional<Package> getPackagesById(@PathVariable("packageID") Long id) {
+        return packageService.getPackagesById(id);
     }
 
     @PostMapping

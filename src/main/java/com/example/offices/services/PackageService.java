@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PackageService {
@@ -42,5 +43,13 @@ public class PackageService {
             item.setState(state);
             packageRepo.save(item);
         }
+    }
+
+    public Optional<Package> getPackagesById(Long id) {
+        return packageRepo
+                .findAll()
+                .stream()
+                .filter(p -> p.getId() == id)
+                .findFirst();
     }
 }
