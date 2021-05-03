@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = {"https://logistic-company-cscb025.herokuapp.com", "http://localhost:3000"})
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/offices")
 public class OfficeController {
     private final OfficeService officeService;
     @Autowired
@@ -17,9 +18,14 @@ public class OfficeController {
         this.officeService = officeService;
     }
 
-    @GetMapping("/offices")
+    @GetMapping
     public List<Office> getOffices() {
         return officeService.getOffices();
+    }
+
+    @GetMapping("/{officeID}")
+    public Optional<Office> getOfficeById(@PathVariable("officeID") Long id) {
+        return officeService.getOfficeById(id);
     }
 
     @PostMapping

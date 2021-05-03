@@ -52,4 +52,12 @@ public class OfficeService {
             throw new IllegalStateException("Requested values are wrong! Location:" + location);
         }
     }
+
+    public Optional<Office> getOfficeById(Long id) {
+       return officeRepo
+               .findAll()
+               .stream()
+               .filter(s -> s.getId() == id)
+               .findFirst();
+    }
 }
