@@ -56,21 +56,23 @@ psql -h <Име на Хост или IP адрес> -p <Порт> -d <Име н�
 
 ### Използвани технолигии за development
 
->> Git i Github
->> Postman - requests and responses to endpoints
->> InteliJ Comunity Edition
->> Spring Boot
->> Java 8
->> Dbeaver and PostgreSQL
+1. Git i Github
+2. Postman - requests and responses to endpoints
+![postman](https://user-images.githubusercontent.com/47338843/117790302-2ddfc900-b284-11eb-9a53-c159ac417b72.png)
+*Пример*
+4. InteliJ Comunity Edition
+5. Spring Boot
+6. Java 8
+7. Dbeaver and PostgreSQL
 
 Dependencies (Зависимости, Външни библиотеки) :
 
->> spring web
->> spring security
->> spring validation
->> jjwt -> json web tokens
->> jpa
->> postgresql
+1. spring web
+2. spring security
+3. spring validation
+4. jjwt -> json web tokens
+5. jpa
+6. postgresql
 
 ### Локален Development
 
