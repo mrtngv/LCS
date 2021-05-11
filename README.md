@@ -62,8 +62,9 @@ psql -h <Име на Хост или IP адрес> -p <Порт> -d <Име н�
 *Пример*
 4. InteliJ Comunity Edition
 5. Spring Boot
-6. Java 8
-7. Dbeaver and PostgreSQL
+6. Maven
+7. Java 8
+8. Dbeaver and PostgreSQL
 
 Dependencies (Зависимости, Външни библиотеки) :
 
