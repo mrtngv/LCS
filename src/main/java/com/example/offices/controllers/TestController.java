@@ -14,7 +14,7 @@ public class TestController {
 
     @GetMapping("/all")
     public String allAccess() {
-        return "Public Content.";
+        return "new Public Content.";
     }
 
     @GetMapping("/signed")
