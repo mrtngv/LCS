@@ -3,6 +3,7 @@ package com.logistics.Package;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,34 +11,41 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/packages")
 public class PackageController {
+
     private final PackageService packageService;
+
     @Autowired
     public PackageController(PackageService packageService) {
         this.packageService = packageService;
     }
 
-    @GetMapping
-    public List<Package> getPackages() {
-        return packageService.getPackages();
-    }
-
-    @GetMapping("/{packageID}")
-    public Optional<Package> getPackagesById(@PathVariable("packageID") Long id) {
-        return packageService.getPackagesById(id);
-    }
-
     @PostMapping
-    public void addPackage(@RequestBody Package item) {
-        packageService.addPackage(item);
+    public void addPackage(@RequestBody AddPackageRequest addPackageRequest) {
+        packageService.addPackage(addPackageRequest);
     }
 
-    @DeleteMapping("/{packageID}")
-    public void deletePackage(@PathVariable("packageID") Long id) {
-        packageService.deletePackage(id);
-    }
-
-    @PutMapping("/{packageID}")
-    public void updatePackage(@PathVariable("packageID") Long id, @RequestBody String state) {
-        packageService.updatePackage(id, state);
-    }
+//    @GetMapping
+//    public List<Package> getPackages() {
+//        return packageService.getPackages();
+//    }
+//
+//    @GetMapping("/{packageID}")
+//    public Optional<Package> getPackagesById(@PathVariable("packageID") Long id) {
+//        return packageService.getPackagesById(id);
+//    }
+//
+//    @PostMapping
+//    public void addPackage(@RequestBody Package item) {
+//        packageService.addPackage(item);
+//    }
+//
+//    @DeleteMapping("/{packageID}")
+//    public void deletePackage(@PathVariable("packageID") Long id) {
+//        packageService.deletePackage(id);
+//    }
+//
+//    @PutMapping("/{packageID}")
+//    public void updatePackage(@PathVariable("packageID") Long id, @RequestBody String state) {
+//        packageService.updatePackage(id, state);
+//    }
 }

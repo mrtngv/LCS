@@ -3,9 +3,11 @@ package com.logistics.UsersAndAuth;
 import java.util.Collection;
         import java.util.List;
         import java.util.Objects;
-        import java.util.stream.Collectors;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-        import org.springframework.security.core.GrantedAuthority;
+import com.logistics.Package.Package;
+import org.springframework.security.core.GrantedAuthority;
         import org.springframework.security.core.authority.SimpleGrantedAuthority;
         import org.springframework.security.core.userdetails.UserDetails;
 
@@ -25,13 +27,16 @@ public class UserDetailsImplementation implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
+    private Set<Package> packageSet;
+
     public UserDetailsImplementation(Long id, String username, String email, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
+                           Collection<? extends GrantedAuthority> authorities, Set<Package> packageSet) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
+        this.packageSet = packageSet;
     }
 
     public static UserDetailsImplementation build(User user) {
@@ -44,7 +49,8 @@ public class UserDetailsImplementation implements UserDetails {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
-                authorities);
+                authorities,
+                user.getUserPackages());
     }
 
     @Override
@@ -58,6 +64,10 @@ public class UserDetailsImplementation implements UserDetails {
 
     public String getEmail() {
         return email;
+    }
+
+    public Set<Package> getPackageSet() {
+        return packageSet;
     }
 
     @Override
@@ -98,5 +108,17 @@ public class UserDetailsImplementation implements UserDetails {
             return false;
         UserDetailsImplementation user = (UserDetailsImplementation) o;
         return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public String toString() {
+        return "UserDetailsImplementation{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", authorities=" + authorities +
+                ", packageSet=" + packageSet +
+                '}';
     }
 }
