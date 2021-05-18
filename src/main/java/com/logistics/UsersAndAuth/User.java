@@ -1,5 +1,7 @@
 package com.logistics.UsersAndAuth;
 
+import com.logistics.Package.Package;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +20,17 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToMany(mappedBy = "packageUsers")
+    Set<Package> userPackages;
+
+    public Set<Package> getUserPackages() {
+        return userPackages;
+    }
+
+    public void setUserPackages(Set<Package> userPackages) {
+        this.userPackages = userPackages;
+    }
 
     @NotBlank
     @Size(max = 20)
@@ -45,6 +58,7 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.userPackages = new HashSet<>();
     }
 
     public Long getId() {

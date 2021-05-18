@@ -1,142 +1,81 @@
 package com.logistics.Package;
 
-import com.logistics.UsersAndAuth.User;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
-@Entity
-@Table(
-        name="packages"
-)
-public class Package {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToMany
-    @JoinTable(
-            name = "package_users",
-            joinColumns = @JoinColumn(name = "package_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> packageUsers = new HashSet<>();
-
-    @NotNull
+public class AddPackageRequest {
+    @NotBlank
     @Size(max = 50)
-    @Column(name="senderFirstName", nullable = false)
     private String senderFirstName;
 
-    @NotNull
+    @NotBlank
     @Size(max = 50)
-    @Column(name="senderLastName", nullable = false)
     private String senderLastName;
 
-    @NotNull
+    @NotBlank
     @Size(min = 6, max = 13)
-    @Column(name="senderTelephoneNumber", nullable = false)
     private String senderTelephoneNumber;
 
-    @Column(name = "isFirm", columnDefinition = "boolean default false")
+    @NotBlank
     private boolean isFirm = false;
 
     @Size(max = 100)
-    @Column(name="firmName", nullable = true)
     private String firmName = "";
 
-    @Column(name = "fromOffice", columnDefinition = "boolean default true")
+    @NotBlank
     private boolean fromOffice = true;
 
-    @NotNull
+    @NotBlank
     @Size(max = 50)
-    @Column(name="fromAddress", nullable = false)
     private String fromAddress;
 
-    @NotNull
+    @NotBlank
     @Size(max = 50)
-    @Column(name="receiverFirstName", nullable = false)
     private String receiverFirstName;
 
-    @NotNull
+    @NotBlank
     @Size(max = 50)
-    @Column(name="receiverLastName", nullable = false)
     private String receiverLastName;
 
-    @NotNull
+    @NotBlank
     @Size(min = 6, max = 13)
-    @Column(name="receiverTelephoneNumber", nullable = false)
     private String receiverTelephoneNumber;
 
-    @Column(name = "toOffice", columnDefinition = "boolean default true")
+    @NotBlank
     private boolean toOffice = true;
 
-    @NotNull
+    @NotBlank
     @Size(max = 50)
-    @Column(name="toAddress", nullable = false)
     private String toAddress;
 
     @Enumerated(EnumType.STRING)
     private EPackageStatus ePackageStatus;
 
-    @Enumerated(EnumType.STRING)
+    @NotBlank
     private EPackageType ePackageType;
 
-    @Enumerated(EnumType.STRING)
+    @NotBlank
     private EPayMethod ePayMethod;
 
-    @Column(name = "weight", precision=10, scale=2)
+    @NotBlank
     private double weight;
 
-    @Column(name = "isFragile", columnDefinition = "boolean default false")
+    @NotBlank
     private boolean isFragile = false;
 
-    @Column(name = "price", precision=10, scale=2)
-    private double price;
-
     @Size(max = 50)
-    @Column(name="comment", nullable = true)
-    public String comment;
+    public String comment = "";
 
-    @Column(name = "isReturnToOffice", columnDefinition = "boolean default false")
+    @NotBlank
     private boolean isReturnToOffice = false;
 
     @Size(max = 100)
-    @Column(name="returnLocation", nullable = true)
     private String returnLocation = "";
 
-    @NotNull
-    @Size(min = 10, max = 10)
-    @Column(name="privateCode", nullable = false)
-    private String privateCode;
-
-    @Column(name="dateOfRequest")
-    private LocalDateTime dateOfRequest;
-
-    @Column(name="dateOfRegistration")
-    private LocalDateTime dateOfRegistration;
-
-    @Column(name="dateOfDelivery")
+    @NotBlank
     private LocalDate dateOfDelivery;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Set<User> getPackageUsers() {
-        return packageUsers;
-    }
-
-    public void setPackageUsers(Set<User> packageUsers) {
-        this.packageUsers = packageUsers;
-    }
 
     public String getSenderFirstName() {
         return senderFirstName;
@@ -274,14 +213,6 @@ public class Package {
         isFragile = fragile;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     public String getComment() {
         return comment;
     }
@@ -306,30 +237,6 @@ public class Package {
         this.returnLocation = returnLocation;
     }
 
-    public String getPrivateCode() {
-        return privateCode;
-    }
-
-    public void setPrivateCode(String privateCode) {
-        this.privateCode = privateCode;
-    }
-
-    public LocalDateTime getDateOfRequest() {
-        return dateOfRequest;
-    }
-
-    public void setDateOfRequest(LocalDateTime dateOfRequest) {
-        this.dateOfRequest = dateOfRequest;
-    }
-
-    public LocalDateTime getDateOfRegistration() {
-        return dateOfRegistration;
-    }
-
-    public void setDateOfRegistration(LocalDateTime dateOfRegistration) {
-        this.dateOfRegistration = dateOfRegistration;
-    }
-
     public LocalDate getDateOfDelivery() {
         return dateOfDelivery;
     }
@@ -337,50 +244,4 @@ public class Package {
     public void setDateOfDelivery(LocalDate dateOfDelivery) {
         this.dateOfDelivery = dateOfDelivery;
     }
-
-    public Package() {}
-
-    public Package(String senderFirstName,
-                   String senderLastName,
-                   String senderTelephoneNumber,
-                   boolean isFirm,
-                   String firmName,
-                   boolean fromOffice,
-                   String fromAddress,
-                   String receiverFirstName,
-                   String receiverLastName,
-                   String receiverTelephoneNumber,
-                   boolean toOffice,
-                   String toAddress,
-                   EPackageType ePackageType,
-                   EPayMethod ePayMethod,
-                   double weight,
-                   boolean isFragile,
-                   String comment,
-                   boolean isReturnToOffice,
-                   String returnLocation,
-                   LocalDate dateOfDelivery) {
-        this.senderFirstName = senderFirstName;
-        this.senderLastName = senderLastName;
-        this.senderTelephoneNumber = senderTelephoneNumber;
-        this.isFirm = isFirm;
-        this.firmName = firmName;
-        this.fromOffice = fromOffice;
-        this.fromAddress = fromAddress;
-        this.receiverFirstName = receiverFirstName;
-        this.receiverLastName = receiverLastName;
-        this.receiverTelephoneNumber = receiverTelephoneNumber;
-        this.toOffice = toOffice;
-        this.toAddress = toAddress;
-        this.ePackageType = ePackageType;
-        this.ePayMethod = ePayMethod;
-        this.weight = weight;
-        this.isFragile = isFragile;
-        this.price = price;
-        this.comment = comment;
-        this.isReturnToOffice = isReturnToOffice;
-        this.returnLocation = returnLocation;
-        this.dateOfDelivery = dateOfDelivery;
-    }
 }
-

@@ -79,7 +79,7 @@ public class AuthController {
 
 
 
-
+        // Автоматично трябва да става само Client Role !
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(ERoles.ROLE_CLIENT)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));

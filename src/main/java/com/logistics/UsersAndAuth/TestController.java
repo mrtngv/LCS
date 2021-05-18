@@ -1,10 +1,13 @@
 package com.logistics.UsersAndAuth;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Locale;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -12,9 +15,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class TestController {
 
+    private final UserDetailsServiceImplementation userDetailsServiceImplementation;
+
+    @Autowired
+    public TestController(UserDetailsServiceImplementation userDetailsServiceImplementation) {
+        this.userDetailsServiceImplementation = userDetailsServiceImplementation;
+    }
+
     @GetMapping("/all")
     public String allAccess() {
         return "new Public Content.";
+    }
+
+    @GetMapping("/getuser")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('OFFICE_EMPLOYEE') or hasRole('DELIVERY') or hasRole('CLIENT')")
+    public ResponseEntity<String> getUser() {
+        UserDetailsImplementation userDetails = (UserDetailsImplementation) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nema takuv imeil bratlence");
+        //return ResponseEntity.ok(userDetails.getEmail());
     }
 
     @GetMapping("/signed")
