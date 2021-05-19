@@ -1,6 +1,7 @@
 package com.logistics.Package;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,8 +21,8 @@ public class PackageController {
     }
 
     @PostMapping
-    public void addPackage(@RequestBody AddPackageRequest addPackageRequest) {
-        packageService.addPackage(addPackageRequest);
+    public ResponseEntity<String> addPackage(@RequestBody AddPackageRequest addPackageRequest) {
+        return packageService.addPackage(addPackageRequest);
     }
 
 //    @GetMapping
