@@ -44,10 +44,15 @@ public class PackageService {
     }
 
     public ResponseEntity<String> addPackage(AddPackageRequest addPackageRequest) {
-        UserDetailsImplementation userDetails = (UserDetailsImplementation) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userDetails.getAuthorities().stream().forEach(s -> {
-            System.out.println(s.toString());
-        });
+        //TODO add the user to the Set
+        try {
+            UserDetailsImplementation userDetails = (UserDetailsImplementation) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            userDetails.getAuthorities().stream().forEach(s -> {
+                System.out.println(s.toString());
+            });
+        }catch (Exception e) {
+            System.out.println("=============> Not Authenticated User!");
+        }
 
         try {
             PackageValidations.validateName(addPackageRequest.getSenderFirstName(), FieldsContants.FIRSTNAME.getField());
