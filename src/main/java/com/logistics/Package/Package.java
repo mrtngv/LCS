@@ -382,5 +382,38 @@ public class Package {
         this.returnLocation = returnLocation;
         this.dateOfDelivery = dateOfDelivery;
     }
+
+    @Override
+    public String toString() {
+        return "Package{" +
+                "id=" + id +
+                ", packageUsers=" + packageUsers +
+                ", senderFirstName='" + senderFirstName + '\'' +
+                ", senderLastName='" + senderLastName + '\'' +
+                ", senderTelephoneNumber='" + senderTelephoneNumber + '\'' +
+                ", isFirm=" + isFirm +
+                ", firmName='" + firmName + '\'' +
+                ", fromOffice=" + fromOffice +
+                ", fromAddress='" + fromAddress + '\'' +
+                ", receiverFirstName='" + receiverFirstName + '\'' +
+                ", receiverLastName='" + receiverLastName + '\'' +
+                ", receiverTelephoneNumber='" + receiverTelephoneNumber + '\'' +
+                ", toOffice=" + toOffice +
+                ", toAddress='" + toAddress + '\'' +
+                ", ePackageStatus=" + ePackageStatus +
+                ", ePackageType=" + ePackageType +
+                ", ePayMethod=" + ePayMethod +
+                ", weight=" + weight +
+                ", isFragile=" + isFragile +
+                ", price=" + price +
+                ", comment='" + comment + '\'' +
+                ", isReturnToOffice=" + isReturnToOffice +
+                ", returnLocation='" + returnLocation + '\'' +
+                ", privateCode='" + privateCode + '\'' +
+                ", dateOfRequest=" + dateOfRequest +
+                ", dateOfRegistration=" + dateOfRegistration +
+                ", dateOfDelivery=" + dateOfDelivery +
+                '}';
+    }
 }
 
