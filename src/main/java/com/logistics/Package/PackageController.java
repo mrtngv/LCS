@@ -1,5 +1,6 @@
 package com.logistics.Package;
 
+import javassist.tools.web.BadHttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,11 @@ public class PackageController {
     @PostMapping
     public ResponseEntity<String> addPackage(@RequestBody AddPackageRequest addPackageRequest) {
         return packageService.addPackage(addPackageRequest);
+    }
+
+    @GetMapping("/specific")
+    public ResponseEntity<Object> getPackageByPrivateCode(@RequestBody PrivateCodeRequest privateCodeRequest) {
+        return packageService.getPackageByPrivateCode(privateCodeRequest.getCode());
     }
 
 //    @GetMapping
