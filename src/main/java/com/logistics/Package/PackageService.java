@@ -9,6 +9,8 @@ import javassist.tools.web.BadHttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,12 +33,14 @@ public class PackageService {
     private final PackageRepository packageRepo;
     private final UserDetailsServiceImplementation userDetailsServiceImplementation;
     private final UserRepository userRepository;
+    private JavaMailSender javaMailSender;
 
     @Autowired
-    public PackageService(PackageRepository packageRepo, UserDetailsServiceImplementation userDetailsServiceImplementation, UserRepository userRepository) {
+    public PackageService(PackageRepository packageRepo, UserDetailsServiceImplementation userDetailsServiceImplementation, UserRepository userRepository, JavaMailSender javaMailSender) {
         this.packageRepo = packageRepo;
         this.userDetailsServiceImplementation = userDetailsServiceImplementation;
         this.userRepository = userRepository;
+        this.javaMailSender = javaMailSender;
     }
 
     public List<Package> getPackages() {
@@ -64,6 +68,7 @@ public class PackageService {
                 addPackageRequest.getSenderFirstName(),
                 addPackageRequest.getSenderLastName(),
                 addPackageRequest.getSenderTelephoneNumber(),
+                addPackageRequest.getSenderEmail(),
                 addPackageRequest.isFirm(),
                 addPackageRequest.getFirmName(),
                 addPackageRequest.isFromOffice(),
@@ -71,6 +76,7 @@ public class PackageService {
                 addPackageRequest.getReceiverFirstName(),
                 addPackageRequest.getReceiverLastName(),
                 addPackageRequest.getReceiverTelephoneNumber(),
+                addPackageRequest.getReceiverEmail(),
                 addPackageRequest.isToOffice(),
                 addPackageRequest.getToAddress(),
                 addPackageRequest.getePackageType(),
@@ -90,8 +96,19 @@ public class PackageService {
         p.setDateOfRegistration(localDateTime);
         p.setPrice(5.5);
 
-
         packageRepo.save(p);
+
+        //send email to package receiver
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(p.getReceiverEmail());
+        mail.setFrom("needylogisticcomapny@gmail.com");
+        mail.setSubject("Needy - Package Notification");
+        mail.setText("Уважаеми/а, " + p.getReceiverFirstName() + " " + p.getReceiverLastName() + "\n\n" + "Очаквайте пратка с номер " + p.getPrivateCode() + " до поискване на адрес " + p.getToAddress() + ". Работно време в деня на доставка 9:00-19:00.\n\nС уважение, \nЕкипът на Нийди");
+        javaMailSender.send(mail);
+        //send email to package sender
+        mail.setTo(p.getSenderEmail());
+        mail.setText("Уважаеми/а, " + p.getSenderFirstName() + " " + p.getSenderLastName() + "\n\nВашата пратка беше успешно " + p.getePackageStatus() + ".\n\nС уважение, \nЕкипът на Нийди");
+        javaMailSender.send(mail);
 
         return ResponseEntity.ok(p.toString());
     }

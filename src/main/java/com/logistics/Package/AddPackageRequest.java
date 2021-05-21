@@ -19,6 +19,10 @@ public class AddPackageRequest {
     private String senderTelephoneNumber;
 
     @NotBlank
+    @Size(max = 50)
+    private String senderEmail;
+
+    @NotBlank
     private boolean isFirm = false;
 
     @Size(max = 100)
@@ -42,6 +46,10 @@ public class AddPackageRequest {
     @NotBlank
     @Size(min = 6, max = 13)
     private String receiverTelephoneNumber;
+
+    @NotBlank
+    @Size(max = 50)
+    private String receiverEmail;
 
     @NotBlank
     private boolean toOffice = true;
@@ -101,6 +109,14 @@ public class AddPackageRequest {
         this.senderTelephoneNumber = senderTelephoneNumber;
     }
 
+    public String getSenderEmail() {
+        return senderEmail;
+    }
+
+    public void setSenderEmail(String senderEmail) {
+        this.senderEmail = senderEmail;
+    }
+
     public boolean isFirm() {
         return isFirm;
     }
@@ -155,6 +171,14 @@ public class AddPackageRequest {
 
     public void setReceiverTelephoneNumber(String receiverTelephoneNumber) {
         this.receiverTelephoneNumber = receiverTelephoneNumber;
+    }
+
+    public String getReceiverEmail() {
+        return receiverEmail;
+    }
+
+    public void setReceiverEmail(String receiverEmail) {
+        this.receiverEmail = receiverEmail;
     }
 
     public boolean isToOffice() {

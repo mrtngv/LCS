@@ -41,6 +41,10 @@ public class Package {
     @Column(name="senderTelephoneNumber", nullable = false)
     private String senderTelephoneNumber;
 
+    @Size(max = 50)
+    @Column(name="senderEmail", nullable = false)
+    private String senderEmail;
+
     @Column(name = "isFirm", columnDefinition = "boolean default false")
     private boolean isFirm = false;
 
@@ -70,6 +74,10 @@ public class Package {
     @Size(min = 6, max = 13)
     @Column(name="receiverTelephoneNumber", nullable = false)
     private String receiverTelephoneNumber;
+
+    @Size(max = 50)
+    @Column(name="receiverEmail", nullable = false)
+    private String receiverEmail;
 
     @Column(name = "toOffice", columnDefinition = "boolean default true")
     private boolean toOffice = true;
@@ -162,6 +170,14 @@ public class Package {
         this.senderTelephoneNumber = senderTelephoneNumber;
     }
 
+    public String getSenderEmail() {
+        return senderEmail;
+    }
+
+    public void setSenderEmail(String senderEmail) {
+        this.senderEmail = senderEmail;
+    }
+
     public boolean isFirm() {
         return isFirm;
     }
@@ -216,6 +232,14 @@ public class Package {
 
     public void setReceiverTelephoneNumber(String receiverTelephoneNumber) {
         this.receiverTelephoneNumber = receiverTelephoneNumber;
+    }
+
+    public String getReceiverEmail() {
+        return receiverEmail;
+    }
+
+    public void setReceiverEmail(String receiverEmail) {
+        this.receiverEmail = receiverEmail;
     }
 
     public boolean isToOffice() {
@@ -343,6 +367,7 @@ public class Package {
     public Package(String senderFirstName,
                    String senderLastName,
                    String senderTelephoneNumber,
+                   String senderEmail,
                    boolean isFirm,
                    String firmName,
                    boolean fromOffice,
@@ -350,6 +375,7 @@ public class Package {
                    String receiverFirstName,
                    String receiverLastName,
                    String receiverTelephoneNumber,
+                   String receiverEmail,
                    boolean toOffice,
                    String toAddress,
                    EPackageType ePackageType,
@@ -363,6 +389,7 @@ public class Package {
         this.senderFirstName = senderFirstName;
         this.senderLastName = senderLastName;
         this.senderTelephoneNumber = senderTelephoneNumber;
+        this.senderEmail = senderEmail;
         this.isFirm = isFirm;
         this.firmName = firmName;
         this.fromOffice = fromOffice;
@@ -370,6 +397,7 @@ public class Package {
         this.receiverFirstName = receiverFirstName;
         this.receiverLastName = receiverLastName;
         this.receiverTelephoneNumber = receiverTelephoneNumber;
+        this.receiverEmail = receiverEmail;
         this.toOffice = toOffice;
         this.toAddress = toAddress;
         this.ePackageType = ePackageType;
@@ -391,6 +419,7 @@ public class Package {
                 ", senderFirstName='" + senderFirstName + '\'' +
                 ", senderLastName='" + senderLastName + '\'' +
                 ", senderTelephoneNumber='" + senderTelephoneNumber + '\'' +
+                ", senderEmail ='" + senderEmail + '\'' +
                 ", isFirm=" + isFirm +
                 ", firmName='" + firmName + '\'' +
                 ", fromOffice=" + fromOffice +
@@ -398,6 +427,7 @@ public class Package {
                 ", receiverFirstName='" + receiverFirstName + '\'' +
                 ", receiverLastName='" + receiverLastName + '\'' +
                 ", receiverTelephoneNumber='" + receiverTelephoneNumber + '\'' +
+                ", receiverEmail'" + receiverEmail + '\'' +
                 ", toOffice=" + toOffice +
                 ", toAddress='" + toAddress + '\'' +
                 ", ePackageStatus=" + ePackageStatus +
