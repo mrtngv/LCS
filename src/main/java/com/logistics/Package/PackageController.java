@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,7 @@ public class PackageController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addPackage(@RequestBody AddPackageRequest addPackageRequest) {
+    public ResponseEntity<String> addPackage(@RequestBody AddPackageRequest addPackageRequest) throws MessagingException {
         return packageService.addPackage(addPackageRequest);
     }
 
