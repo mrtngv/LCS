@@ -7,7 +7,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,7 +26,7 @@ public class Package {
             name = "package_users",
             joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> packageUsers = new HashSet<>();
+    private List<User> packageUsers = new ArrayList<>();
 
     @NotNull
     @Size(max = 50)
@@ -138,11 +140,11 @@ public class Package {
         this.id = id;
     }
 
-    public Set<User> getPackageUsers() {
+    public List<User> getPackageUsers() {
         return packageUsers;
     }
 
-    public void setPackageUsers(Set<User> packageUsers) {
+    public void setPackageUsers(List<User> packageUsers) {
         this.packageUsers = packageUsers;
     }
 

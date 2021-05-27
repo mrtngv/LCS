@@ -2,7 +2,9 @@ package com.logistics.UsersAndAuth;
 
 import com.logistics.Package.Package;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -22,13 +24,13 @@ public class User {
     private Long id;
 
     @ManyToMany(mappedBy = "packageUsers")
-    Set<Package> userPackages;
+    List<Package> userPackages;
 
-    public Set<Package> getUserPackages() {
+    public List<Package> getUserPackages() {
         return userPackages;
     }
 
-    public void setUserPackages(Set<Package> userPackages) {
+    public void setUserPackages(List<Package> userPackages) {
         this.userPackages = userPackages;
     }
 
@@ -58,7 +60,7 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.userPackages = new HashSet<>();
+        this.userPackages = new ArrayList<>();
     }
 
     public Long getId() {
