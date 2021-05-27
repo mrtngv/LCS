@@ -27,10 +27,10 @@ public class UserDetailsImplementation implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    private Set<Package> packageSet;
+    private List<Package> packageSet;
 
     public UserDetailsImplementation(Long id, String username, String email, String password,
-                           Collection<? extends GrantedAuthority> authorities, Set<Package> packageSet) {
+                           Collection<? extends GrantedAuthority> authorities, List<Package> packageSet) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -66,7 +66,7 @@ public class UserDetailsImplementation implements UserDetails {
         return email;
     }
 
-    public Set<Package> getPackageSet() {
+    public List<Package> getPackageSet() {
         return packageSet;
     }
 

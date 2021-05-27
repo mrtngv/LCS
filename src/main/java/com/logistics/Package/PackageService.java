@@ -56,7 +56,10 @@ public class PackageService {
     }
 
     public ResponseEntity<String> addPackage(AddPackageRequest addPackageRequest) throws MessagingException {
-        //TODO add the user to the Set
+        // TODO {if the user is office User then -> assign himself as a reporter, calculate the driver and check if the telephone number of the sender}
+        // TODO {If the user is CLIENT, only the user is the set, until Office_user accepts the package and assign himself as a reporter and then calculate the free driver}
+        // TODO calculate the free driver which is going to be assigned
+
         try {
             UserDetailsImplementation userDetails = (UserDetailsImplementation) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             userDetails.getAuthorities().stream().forEach(s -> {
