@@ -1,26 +1,35 @@
 package com.logistics.Office;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.Comparator;
+
 
 @Entity
 @Table(
         name= "offices"
 )
 public class Office {
-    private Long id;
-    private String location;
-    private String city;
-
-    public Office() {
-    }
-
-    public Office(String location, String city) {
-        this.location = location;
-        this.city = city;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
+    @Size(max = 25)
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @NotNull
+    @Size(max = 25)
+    @Column(name = "city", nullable = false)
+    private String city;
+
+    @NotNull
+    @Size(max = 50)
+    @Column(name = "location", nullable = false)
+    private String location;
+
     public Long getId() {
         return id;
     }
@@ -29,16 +38,14 @@ public class Office {
         this.id = id;
     }
 
-    @Column(name="location", nullable = false)
-    public String getLocation() {
-        return location;
+    public String getName() {
+        return name;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Column(name="city", nullable = false)
     public String getCity() {
         return city;
     }
@@ -47,12 +54,40 @@ public class Office {
         this.city = city;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Office(String name, String city, String location) {
+        this.name = name;
+        this.city = city;
+        this.location = location;
+    }
+
+    public Office() {
+    }
+
+    public static Comparator<Office> compareByCityName = new Comparator<Office>() {
+        @Override
+        public int compare(Office o1, Office o2) {
+            return o1.city.compareTo(o2.city);
+        }
+    };
+
     @Override
     public String toString() {
         return "Office{" +
                 "id=" + id +
-                ", location='" + location + '\'' +
+                ", name='" + name + '\'' +
                 ", city='" + city + '\'' +
+                ", location='" + location + '\'' +
                 '}';
     }
+
+
+
 }
