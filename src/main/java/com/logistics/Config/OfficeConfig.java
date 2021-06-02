@@ -21,9 +21,13 @@ public class OfficeConfig {
             /*
                 Adding initial hardcoded data just for test
              */
-            Office ekont1 = new Office("Boris Stefanov 2", "Sofia");
-            Office ekont2 = new Office("Zahari Stoyanov", "Sofia");
-            officeRepo.saveAll(Arrays.asList(ekont1, ekont2));
+            Office ekont1 = new Office("blackGOLD_003", "Sofia","ul. Slavqni 1");
+            Office ekont5 = new Office("blackGOLD_004", "Sofia","ul. Triadica 3");
+            Office ekont6 = new Office("blackGOLD_001", "Sofia","ul. ILUMINATI 666");
+            Office ekont2 = new Office("roseGOLD_002", "Plovdiv","ul. Gospel 32");
+            Office ekont3 = new Office("roseGOLD_003", "Plovdiv","bul. Cheshmqna voda 120");
+            Office ekont4 = new Office("roseGOLD_004", "Plovdiv","kvartal Tepe ul. mrunkalo 2");
+            officeRepo.saveAll(Arrays.asList(ekont1, ekont2,ekont3,ekont4,ekont5,ekont6));
 
 //            User user1 = new User("NIGHTWOLF", "nightwolf@gmail.com", "hello1234");
 //            User user2 = new User("NIGH23TWOLF", "nig23htwol1f@gmail.com", "hello1234");
