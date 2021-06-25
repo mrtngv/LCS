@@ -20,17 +20,34 @@ public class AddPackageRequest {
     private String senderTelephoneNumber;
 
     @NotBlank
+    @Size(min = 2, max = 25)
+    private String fromCity;
+
+    @NotBlank
+    @Size(min = 2, max = 25)
+    private String toCity;
+
+    @Size(min = 2, max = 25)
+    private String alternativeCity;
+
+    @NotBlank
     @Size(max = 50)
     private String senderEmail;
 
     @NotBlank
-    private boolean isFirm = false;
+    private boolean isFirm;
 
     @Size(max = 100)
     private String firmName = "";
 
     @NotBlank
-    private boolean fromOffice = true;
+    private boolean toFirm;
+
+    @Size(max = 100)
+    private String toFirmName = "";
+
+    @NotBlank
+    private boolean fromOffice;
 
     @NotBlank
     @Size(max = 50)
@@ -53,7 +70,7 @@ public class AddPackageRequest {
     private String receiverEmail;
 
     @NotBlank
-    private boolean toOffice = true;
+    private boolean toOffice;
 
     @NotBlank
     @Size(max = 50)
@@ -72,19 +89,69 @@ public class AddPackageRequest {
     private double weight;
 
     @NotBlank
+    private boolean returnToOffice;
+
+    public boolean getToFirm() {
+        return toFirm;
+    }
+
+    public void setToFirm(boolean toFirm) {
+        this.toFirm = toFirm;
+    }
+
+    public String getFromCity() {
+        return fromCity;
+    }
+
+    public void setFromCity(String fromCity) {
+        this.fromCity = fromCity;
+    }
+
+    public String getToCity() {
+        return toCity;
+    }
+
+    public void setToCity(String toCity) {
+        this.toCity = toCity;
+    }
+
+    public String getAlternativeCity() {
+        return alternativeCity;
+    }
+
+    public void setAlternativeCity(String alternativeCity) {
+        this.alternativeCity = alternativeCity;
+    }
+
+    public String getToFirmName() {
+        return toFirmName;
+    }
+
+    public void setToFirmName(String toFirmName) {
+        this.toFirmName = toFirmName;
+    }
+
+    public LocalDate getDateOfSending() {
+        return dateOfSending;
+    }
+
+    public void setDateOfSending(LocalDate dateOfSending) {
+        this.dateOfSending = dateOfSending;
+    }
+
+    @NotBlank
     private boolean isFragile;
 
     @Size(max = 50)
     public String comment = "";
-
-    @NotBlank
-    private boolean isReturnToOffice = false;
 
     @Size(max = 100)
     private String returnLocation = "";
 
     @NotBlank
     private LocalDate dateOfDelivery;
+
+    private LocalDate dateOfSending;
 
     public String getSenderFirstName() {
         return senderFirstName;
@@ -118,11 +185,11 @@ public class AddPackageRequest {
         this.senderEmail = senderEmail;
     }
 
-    public boolean isFirm() {
+    public boolean getIsFirm() {
         return isFirm;
     }
 
-    public void setFirm(boolean firm) {
+    public void setIsFirm(boolean firm) {
         isFirm = firm;
     }
 
@@ -134,11 +201,11 @@ public class AddPackageRequest {
         this.firmName = firmName;
     }
 
-    public boolean isFromOffice() {
+    public boolean getFromOffice() {
         return fromOffice;
     }
 
-    public void setFromOffice(boolean fromOffice) {
+    public void setIsFromOffice(boolean fromOffice) {
         this.fromOffice = fromOffice;
     }
 
@@ -182,11 +249,11 @@ public class AddPackageRequest {
         this.receiverEmail = receiverEmail;
     }
 
-    public boolean isToOffice() {
+    public boolean getToOffice() {
         return toOffice;
     }
 
-    public void setToOffice(boolean toOffice) {
+    public void setIsToOffice(boolean toOffice) {
         this.toOffice = toOffice;
     }
 
@@ -230,11 +297,11 @@ public class AddPackageRequest {
         this.weight = weight;
     }
 
-    public boolean isFragile() {
+    public boolean getIsFragile() {
         return isFragile;
     }
 
-    public void setFragile(boolean fragile) {
+    public void setIsFragile(boolean fragile) {
         isFragile = fragile;
     }
 
@@ -246,12 +313,12 @@ public class AddPackageRequest {
         this.comment = comment;
     }
 
-    public boolean isReturnToOffice() {
-        return isReturnToOffice;
+    public boolean getReturnToOffice() {
+        return returnToOffice;
     }
 
     public void setReturnToOffice(boolean returnToOffice) {
-        isReturnToOffice = returnToOffice;
+        this.returnToOffice = returnToOffice;
     }
 
     public String getReturnLocation() {
