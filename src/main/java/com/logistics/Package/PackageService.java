@@ -101,7 +101,14 @@ public class PackageService {
                 addPackageRequest.getComment(),
                 addPackageRequest.getReturnToOffice(),
                 addPackageRequest.getReturnLocation(),
-                addPackageRequest.getDateOfDelivery()
+                addPackageRequest.getDateOfDelivery(),
+                addPackageRequest.getDateOfSending() ,
+                addPackageRequest.getToFirm() ,
+                addPackageRequest.getToFirmName() ,
+                addPackageRequest.getFromCity() ,
+                addPackageRequest.getToCity() ,
+                addPackageRequest.getAlternativeCity()
+
         );
 
         p.setePackageStatus(EPackageStatus.REQUESTED);

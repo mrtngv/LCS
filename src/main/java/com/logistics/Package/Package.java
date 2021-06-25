@@ -123,6 +123,73 @@ public class Package {
     @Column(name="privateCode", nullable = false)
     private String privateCode;
 
+    @NotNull
+    @Column(name="fromCity", nullable = false)
+    private String fromCity;
+
+    @NotNull
+    @Column(name="toCity", nullable = false)
+    private String toCity;
+
+    @NotNull
+    @Column(name="alternativeCity", nullable = false)
+    private String alternativeCity;
+
+
+    @Column(name="toFirmName", nullable = false)
+    private String toFirmName;
+
+    public String getFromCity() {
+        return fromCity;
+    }
+
+    public void setFromCity(String fromCity) {
+        this.fromCity = fromCity;
+    }
+
+    public String getToCity() {
+        return toCity;
+    }
+
+    public void setToCity(String toCity) {
+        this.toCity = toCity;
+    }
+
+    public String getAlternativeCity() {
+        return alternativeCity;
+    }
+
+    public void setAlternativeCity(String alternativeCity) {
+        this.alternativeCity = alternativeCity;
+    }
+
+    public String getToFirmName() {
+        return toFirmName;
+    }
+
+    public void setToFirmName(String toFirmName) {
+        this.toFirmName = toFirmName;
+    }
+
+    public boolean isToFirm() {
+        return toFirm;
+    }
+
+    public void setToFirm(boolean toFirm) {
+        this.toFirm = toFirm;
+    }
+
+    public LocalDate getDateOfSending() {
+        return dateOfSending;
+    }
+
+    public void setDateOfSending(LocalDate dateOfSending) {
+        this.dateOfSending = dateOfSending;
+    }
+
+    @Column(name = "toFirm", columnDefinition = "boolean default false")
+    private boolean toFirm = false;
+
     @Column(name="dateOfRequest")
     private LocalDateTime dateOfRequest;
 
@@ -131,6 +198,9 @@ public class Package {
 
     @Column(name="dateOfDelivery")
     private LocalDate dateOfDelivery;
+
+    @Column(name="dateOfSending")
+    private LocalDate dateOfSending;
 
     public Long getId() {
         return id;
@@ -387,7 +457,14 @@ public class Package {
                    String comment,
                    boolean isReturnToOffice,
                    String returnLocation,
-                   LocalDate dateOfDelivery) {
+                   LocalDate dateOfDelivery,
+                   LocalDate dateOfSending,
+                   boolean toFirm,
+                   String toFirmName,
+                   String fromCity,
+                   String toCity,
+                   String alternativeCity
+                   ) {
         this.senderFirstName = senderFirstName;
         this.senderLastName = senderLastName;
         this.senderTelephoneNumber = senderTelephoneNumber;
@@ -411,6 +488,12 @@ public class Package {
         this.isReturnToOffice = isReturnToOffice;
         this.returnLocation = returnLocation;
         this.dateOfDelivery = dateOfDelivery;
+        this.dateOfSending = dateOfSending;
+        this.toFirm = isFirm;
+        this.toFirmName = toFirmName;
+        this.fromCity = fromCity;
+        this.toCity = toCity;
+        this.alternativeCity = alternativeCity;
     }
 
     @Override
@@ -421,7 +504,7 @@ public class Package {
                 ", senderFirstName='" + senderFirstName + '\'' +
                 ", senderLastName='" + senderLastName + '\'' +
                 ", senderTelephoneNumber='" + senderTelephoneNumber + '\'' +
-                ", senderEmail ='" + senderEmail + '\'' +
+                ", senderEmail='" + senderEmail + '\'' +
                 ", isFirm=" + isFirm +
                 ", firmName='" + firmName + '\'' +
                 ", fromOffice=" + fromOffice +
@@ -429,7 +512,7 @@ public class Package {
                 ", receiverFirstName='" + receiverFirstName + '\'' +
                 ", receiverLastName='" + receiverLastName + '\'' +
                 ", receiverTelephoneNumber='" + receiverTelephoneNumber + '\'' +
-                ", receiverEmail'" + receiverEmail + '\'' +
+                ", receiverEmail='" + receiverEmail + '\'' +
                 ", toOffice=" + toOffice +
                 ", toAddress='" + toAddress + '\'' +
                 ", ePackageStatus=" + ePackageStatus +
@@ -442,9 +525,15 @@ public class Package {
                 ", isReturnToOffice=" + isReturnToOffice +
                 ", returnLocation='" + returnLocation + '\'' +
                 ", privateCode='" + privateCode + '\'' +
+                ", fromCity='" + fromCity + '\'' +
+                ", toCity='" + toCity + '\'' +
+                ", alternativeCity='" + alternativeCity + '\'' +
+                ", toFirmName='" + toFirmName + '\'' +
+                ", toFirm=" + toFirm +
                 ", dateOfRequest=" + dateOfRequest +
                 ", dateOfRegistration=" + dateOfRegistration +
                 ", dateOfDelivery=" + dateOfDelivery +
+                ", dateOfSending=" + dateOfSending +
                 '}';
     }
 }
