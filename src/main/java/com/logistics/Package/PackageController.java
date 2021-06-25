@@ -32,10 +32,10 @@ public class PackageController {
         return packageService.getPackageByPrivateCode(privateCodeRequest.getCode());
     }
 
-//    @GetMapping
-//    public List<Package> getPackages() {
-//        return packageService.getPackages();
-//    }
+    @GetMapping
+    public List<Package> getPackages() {
+        return packageService.getPackages();
+    }
 //
 //    @GetMapping("/{packageID}")
 //    public Optional<Package> getPackagesById(@PathVariable("packageID") Long id) {

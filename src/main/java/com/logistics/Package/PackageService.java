@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.mail.MessagingException;
+import java.lang.reflect.Executable;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
@@ -62,8 +63,10 @@ public class PackageService {
 
         try {
             UserDetailsImplementation userDetails = (UserDetailsImplementation) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
             userDetails.getAuthorities().stream().forEach(s -> {
                 System.out.println(s.toString());
+
             });
         }catch (Exception e) {
             System.out.println("=============> Not Authenticated User!");
@@ -75,29 +78,37 @@ public class PackageService {
             String error = Functions.getErrorMessage(d.toString());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         }
+
         Package p = new Package(
                 addPackageRequest.getSenderFirstName(),
                 addPackageRequest.getSenderLastName(),
                 addPackageRequest.getSenderTelephoneNumber(),
                 addPackageRequest.getSenderEmail(),
-                addPackageRequest.isFirm(),
+                addPackageRequest.getIsFirm(),
                 addPackageRequest.getFirmName(),
-                addPackageRequest.isFromOffice(),
+                addPackageRequest.getFromOffice(),
                 addPackageRequest.getFromAddress(),
                 addPackageRequest.getReceiverFirstName(),
                 addPackageRequest.getReceiverLastName(),
                 addPackageRequest.getReceiverTelephoneNumber(),
                 addPackageRequest.getReceiverEmail(),
-                addPackageRequest.isToOffice(),
+                addPackageRequest.getToOffice(),
                 addPackageRequest.getToAddress(),
                 addPackageRequest.getePackageType(),
                 addPackageRequest.getePayMethod(),
                 addPackageRequest.getWeight(),
-                addPackageRequest.isFragile(),
+                addPackageRequest.getIsFragile(),
                 addPackageRequest.getComment(),
-                addPackageRequest.isReturnToOffice(),
+                addPackageRequest.getReturnToOffice(),
                 addPackageRequest.getReturnLocation(),
-                addPackageRequest.getDateOfDelivery()
+                addPackageRequest.getDateOfDelivery(),
+                addPackageRequest.getDateOfSending() ,
+                addPackageRequest.getToFirm() ,
+                addPackageRequest.getToFirmName() ,
+                addPackageRequest.getFromCity() ,
+                addPackageRequest.getToCity() ,
+                addPackageRequest.getAlternativeCity()
+
         );
 
         p.setePackageStatus(EPackageStatus.REQUESTED);
@@ -108,7 +119,7 @@ public class PackageService {
         p.setDateOfRegistration(localDateTime);
         p.setPrice(5.5);
 
-        packageRepo.save(p);
+        packageRepo.saveAndFlush(p);
         mailFunctions.sendEmail(privateCode, p.getSenderEmail(), p.getReceiverEmail());
         return ResponseEntity.ok(p.toString());
     }
