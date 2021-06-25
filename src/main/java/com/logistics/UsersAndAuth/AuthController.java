@@ -47,12 +47,28 @@ public class AuthController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
+        String role = "NO_ROLE";
+        if(roles.contains(ERoles.ROLE_MODERATOR.toString())){
+            role = ERoles.ROLE_MODERATOR.toString();
+        }
+        else if(roles.contains(ERoles.ROLE_OFFICE_EMPLOYEE.toString())){
+            role = ERoles.ROLE_OFFICE_EMPLOYEE.toString();
+        }
+        else if(roles.contains(ERoles.ROLE_DELIVERY.toString())){
+            role = ERoles.ROLE_DELIVERY.toString();
+        }
+        else if(roles.contains(ERoles.ROLE_CLIENT.toString())){
+            role = ERoles.ROLE_CLIENT.toString();
+        }
+        else {
+            role = "NO_ROLE";
+        }
+
 
         return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
-                roles));
+                role));
     }
 
     @PostMapping("/register")

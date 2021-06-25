@@ -75,6 +75,8 @@ public class PackageService {
             String error = Functions.getErrorMessage(d.toString());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         }
+
+        System.out.println("FLAG-------->" + addPackageRequest.isFragile());
         Package p = new Package(
                 addPackageRequest.getSenderFirstName(),
                 addPackageRequest.getSenderLastName(),

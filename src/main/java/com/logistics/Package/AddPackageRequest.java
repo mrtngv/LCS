@@ -1,5 +1,6 @@
 package com.logistics.Package;
 
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -71,7 +72,7 @@ public class AddPackageRequest {
     private double weight;
 
     @NotBlank
-    private boolean isFragile = false;
+    private boolean isFragile;
 
     @Size(max = 50)
     public String comment = "";
