@@ -1,5 +1,6 @@
 package com.logistics.Package;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.logistics.UsersAndAuth.User;
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class Package {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonBackReference
     @ManyToMany
     @JoinTable(
             name = "package_users",
