@@ -17,6 +17,17 @@ public class MailTemplates {
         return buildFirstPart(firstName) + buildMiddlePartSender(code) + mailTemplate1_end_part;
     }
 
+
+    public static String buildReceiverMail(String firstName, String code, String city, String address, boolean isOffice, String date) {
+        String officeOrPrivateAdress = "личен адрес: град";
+        if(isOffice) {
+            officeOrPrivateAdress="офис: град ";
+        }
+        return buildFirstPart(firstName) + mailTemplate2_middle_part + " Очаквайте пратка до " + officeOrPrivateAdress + city + " , "
+                + address + " с ориентировачна дата за доставка " + date + "." + mailTemplate2_middle_part2 + code + mailTemplate1_middle_part_afterCode + mailTemplate1_end_part;
+
+    }
+
     private static final String mailTemplate1_logo_and_address_to_person = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
             "<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n" +
             "<head>\n" +
@@ -110,7 +121,8 @@ public class MailTemplates {
 
     private static final String mailTemplate1_middle_part = "<p style=\"color:#333333;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;mso-line-height-rule:exactly;Margin:0\"><br></p><p style=\"color:#333333;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;mso-line-height-rule:exactly;Margin:0\">Вашата пратка е успешно регистрирана.</p><p style=\"color:#333333;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;mso-line-height-rule:exactly;Margin:0\">Можете да проследите статуса ѝ от нашия&nbsp;сайт в секция \"<em><a target=\"_blank\" style=\"color:#1c496c;-webkit-text-size-adjust:none;text-decoration:underline;-ms-text-size-adjust:none;font-size:14px;line-height:21px;mso-line-height-rule:exactly\" href=\"https://logistic-company-cscb025.herokuapp.com/#/package/track\">Проследи <span style=\"font-family:'courier new', courier, 'lucida sans typewriter', 'lucida typewriter', monospace\"></span>пратка</a></em>\".</p><p style=\"color:#333333;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;mso-line-height-rule:exactly;Margin:0\">Кодът на пратката е: <strong>";
     private static final String mailTemplate1_middle_part_afterCode = "</strong></p><p style=\"color:#333333;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;mso-line-height-rule:exactly;Margin:0\"><br></p><p style=\"color:#333333;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;mso-line-height-rule:exactly;Margin:0\">Приятен и успешен ден,</p><p style=\"color:#333333;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;mso-line-height-rule:exactly;Margin:0\">Екипът на Needy<br><br></p></td>";
-
+    private static final String mailTemplate2_middle_part="<p style=\"color:#333333;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;mso-line-height-rule:exactly;Margin:0\"><br></p><p style=\"color:#333333;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;mso-line-height-rule:exactly;Margin:0\">";
+    private static final String mailTemplate2_middle_part2 = "</p><p style=\\\"color:#333333;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;mso-line-height-rule:exactly;Margin:0\\\">Повече информация относно пратката можете да намерите в нашия сайт в секция \"<em><a target=\"_blank\" style=\"color:#1c496c;-webkit-text-size-adjust:none;text-decoration:underline;-ms-text-size-adjust:none;font-size:14px;line-height:21px;mso-line-height-rule:exactly\" href=\"https://logistic-company-cscb025.herokuapp.com/#/package/track\">Проследи <span style=\"font-family:'courier new', courier, 'lucida sans typewriter', 'lucida typewriter', monospace\"></span>пратка</a></em>\".</p><p style=\"color:#333333;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;mso-line-height-rule:exactly;Margin:0\">Кодът на пратката е: <strong>";
     private static final String mailTemplate1_end_part = "</tr>\n" +
             "</table></td>\n" +
             "</tr>\n" +

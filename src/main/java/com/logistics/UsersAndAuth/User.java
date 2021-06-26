@@ -1,5 +1,6 @@
 package com.logistics.UsersAndAuth;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.logistics.Package.Package;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class User {
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JsonBackReference
     @JoinTable(	name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
