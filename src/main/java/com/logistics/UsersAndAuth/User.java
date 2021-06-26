@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -97,6 +98,10 @@ public class User {
 
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public List<String> getStringRoles() {
+        return this.getRoles().stream().map(a -> a.getName().toString()).collect(Collectors.toList());
     }
 
     public void setRoles(Set<Role> roles) {

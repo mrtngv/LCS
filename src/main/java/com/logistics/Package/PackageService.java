@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ import java.time.Month;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.zip.DataFormatException;
 
 @Service
@@ -56,22 +58,87 @@ public class PackageService {
         return packageRepo.findAll();
     }
 
+    private User calculateDriver() {
+        List<User> deliveryGuys = userRepository.findAll().stream().filter(u -> u.getStringRoles().contains(ERoles.ROLE_DELIVERY.toString())).collect(Collectors.toList());
+        System.out.println("Delivery Guys");
+        System.out.println(deliveryGuys);
+        if (deliveryGuys.size() == 0) {
+            throw new IllegalStateException("There are no drivers in the company");
+        }
+        User selectedDeliveryGuy = deliveryGuys.get(0);
+        int c = Integer.MAX_VALUE;
+        for (User delivery : deliveryGuys) {
+            if (delivery.getUserPackages().size() < c) {
+                selectedDeliveryGuy = delivery;
+                c = delivery.getUserPackages().size();
+            }
+        }
+
+        return selectedDeliveryGuy;
+    }
+
+    private void addAllPossibleUsersToPackage(Package p) {
+        List<User> currentUsers = p.getPackageUsers();
+        String role = this.getUltimateAuthorization();
+        String senderEmailBegin = p.getSenderEmail();
+
+        if (role.equals(ERoles.ROLE_OFFICE_EMPLOYEE.toString())) {
+            try {
+                UserDetailsImplementation userDetails = (UserDetailsImplementation) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                User office = userRepository.findAll().stream().filter(u -> u.getEmail().equals(userDetails.getEmail())).findFirst().orElse(office = null);
+                if (office != null) {
+                    currentUsers.add(office);
+                }
+            } catch (Exception e) {
+                System.out.println("=============> Not Authenticated User!");
+            }
+        }
+
+        User driver = this.calculateDriver();
+        currentUsers.add(driver);
+
+        // за таблицата с user_id - package_id
+        User userSender = userRepository.findAll().stream().filter(user -> user.getEmail().equals(p.getSenderEmail())).findFirst().orElse(userSender = null);
+        if (userSender != null && p.getSenderEmail().equals(userSender.getEmail())) {
+            currentUsers.add(userSender);
+        }
+        User userReceiver = userRepository.findAll().stream().filter(user -> user.getEmail().equals(p.getReceiverEmail())).findFirst().orElse(userReceiver = null);
+        if (userReceiver != null && p.getReceiverEmail().equals(userReceiver.getEmail())) {
+            currentUsers.add(userReceiver);
+        }
+        p.setPackageUsers(currentUsers);
+
+    }
+//
+//    public Double calculatePrice () {
+//
+//    }
+
+    public String getUltimateAuthorization() {
+        try {
+            UserDetailsImplementation userDetails = (UserDetailsImplementation) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            List<? extends GrantedAuthority> collect = userDetails.getAuthorities().stream().collect(Collectors.toList());
+            List <String> newCollect = collect.stream().map(v -> v.toString()).collect(Collectors.toList());
+            if (newCollect.contains(ERoles.ROLE_MODERATOR.toString()))
+                return ERoles.ROLE_MODERATOR.toString();
+            if (newCollect.contains(ERoles.ROLE_OFFICE_EMPLOYEE.toString()))
+                return ERoles.ROLE_OFFICE_EMPLOYEE.toString();
+            if (newCollect.contains(ERoles.ROLE_DELIVERY.toString()))
+                return ERoles.ROLE_DELIVERY.toString();
+            if (newCollect.contains(ERoles.ROLE_CLIENT.toString()))
+                return ERoles.ROLE_CLIENT.toString();
+        } catch (Exception e) {
+
+        }
+        return "NO_ROLE";
+    }
+
     public ResponseEntity<String> addPackage(AddPackageRequest addPackageRequest) throws MessagingException {
         // TODO {if the user is office User then -> assign himself as a reporter, calculate the driver and check if the telephone number of the sender}
         // TODO {If the user is CLIENT, only the user is the set, until Office_user accepts the package and assign himself as a reporter and then calculate the free driver}
         // TODO calculate the free driver which is going to be assigned
 
-        try {
-            UserDetailsImplementation userDetails = (UserDetailsImplementation) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-            userDetails.getAuthorities().stream().forEach(s -> {
-                System.out.println(s.toString());
-
-            });
-        }catch (Exception e) {
-            System.out.println("=============> Not Authenticated User!");
-        }
-
+        // TODO extend validations as the example below -
         try {
             PackageValidations.validateName(addPackageRequest.getSenderFirstName(), FieldsContants.FIRSTNAME.getField());
         } catch (DataFormatException d) {
@@ -102,13 +169,12 @@ public class PackageService {
                 addPackageRequest.getReturnToOffice(),
                 addPackageRequest.getReturnLocation(),
                 addPackageRequest.getDateOfDelivery(),
-                addPackageRequest.getDateOfSending() ,
-                addPackageRequest.getToFirm() ,
-                addPackageRequest.getToFirmName() ,
-                addPackageRequest.getFromCity() ,
-                addPackageRequest.getToCity() ,
+                addPackageRequest.getDateOfSending(),
+                addPackageRequest.getToFirm(),
+                addPackageRequest.getToFirmName(),
+                addPackageRequest.getFromCity(),
+                addPackageRequest.getToCity(),
                 addPackageRequest.getAlternativeCity()
-
         );
 
         p.setePackageStatus(EPackageStatus.REQUESTED);
@@ -119,22 +185,10 @@ public class PackageService {
         p.setDateOfRegistration(localDateTime);
         p.setPrice(5.5);
 
-        // за таблицата с user_id - package_id
-        User userSender = userRepository.findAll().stream().filter(user -> user.getEmail().equals(addPackageRequest.getSenderEmail())).findFirst().orElse(userSender = null);
-        if (userSender != null && p.getSenderEmail().equals(userSender.getEmail())) {
-            List<User> currentUsers = p.getPackageUsers();
-            currentUsers.add(userSender);
-            p.setPackageUsers(currentUsers);
-        }
-        User userReceiver = userRepository.findAll().stream().filter(user -> user.getEmail().equals(addPackageRequest.getReceiverEmail())).findFirst().orElse(userReceiver = null);
-        if (userReceiver != null && p.getReceiverEmail().equals(userReceiver.getEmail())) {
-            List<User> currentUsers = p.getPackageUsers();
-            currentUsers.add(userReceiver);
-            p.setPackageUsers(currentUsers);
-        }
+        this.addAllPossibleUsersToPackage(p);
 
         packageRepo.saveAndFlush(p);
-        mailFunctions.sendEmail(privateCode, p.getSenderEmail(), p.getReceiverEmail());
+        //  mailFunctions.sendEmail(privateCode, p.getSenderEmail(), p.getReceiverEmail());
         return ResponseEntity.ok(p.toString());
     }
 
