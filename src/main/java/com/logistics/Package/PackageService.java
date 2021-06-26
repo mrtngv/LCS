@@ -119,6 +119,20 @@ public class PackageService {
         p.setDateOfRegistration(localDateTime);
         p.setPrice(5.5);
 
+        // за таблицата с user_id - package_id
+        User userSender = userRepository.findAll().stream().filter(user -> user.getEmail().equals(addPackageRequest.getSenderEmail())).findFirst().orElse(userSender = null);
+        if (userSender != null && p.getSenderEmail().equals(userSender.getEmail())) {
+            List<User> currentUsers = p.getPackageUsers();
+            currentUsers.add(userSender);
+            p.setPackageUsers(currentUsers);
+        }
+        User userReceiver = userRepository.findAll().stream().filter(user -> user.getEmail().equals(addPackageRequest.getReceiverEmail())).findFirst().orElse(userReceiver = null);
+        if (userReceiver != null && p.getReceiverEmail().equals(userReceiver.getEmail())) {
+            List<User> currentUsers = p.getPackageUsers();
+            currentUsers.add(userReceiver);
+            p.setPackageUsers(currentUsers);
+        }
+
         packageRepo.saveAndFlush(p);
         mailFunctions.sendEmail(privateCode, p.getSenderEmail(), p.getReceiverEmail());
         return ResponseEntity.ok(p.toString());
