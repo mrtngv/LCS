@@ -100,9 +100,7 @@ public class PackageService {
             User driver = this.calculateDriver();
             currentUsers.add(driver);
         }catch (IllegalStateException e) {
-
         }
-
 
         // за таблицата с user_id - package_id
         User userSender = userRepository.findAll().stream().filter(user -> user.getEmail().equals(p.getSenderEmail())).findFirst().orElse(userSender = null);
