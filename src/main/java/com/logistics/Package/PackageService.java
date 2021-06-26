@@ -77,10 +77,11 @@ public class PackageService {
         return selectedDeliveryGuy;
     }
 
-    private void addAllPossibleUsersToPackage(Package p) {
+    private void addAllPossibleUsersToPackage(Package p, String privateCode) throws MessagingException {
         List<User> currentUsers = p.getPackageUsers();
         String role = this.getUltimateAuthorization();
         String senderEmailBegin = p.getSenderEmail();
+        int flag = 0;
 
         if (role.equals(ERoles.ROLE_OFFICE_EMPLOYEE.toString())) {
             try {
@@ -88,14 +89,20 @@ public class PackageService {
                 User office = userRepository.findAll().stream().filter(u -> u.getEmail().equals(userDetails.getEmail())).findFirst().orElse(office = null);
                 if (office != null) {
                     currentUsers.add(office);
+                    flag = 1;
                 }
             } catch (Exception e) {
                 System.out.println("=============> Not Authenticated User!");
             }
         }
 
-        User driver = this.calculateDriver();
-        currentUsers.add(driver);
+        try {
+            User driver = this.calculateDriver();
+            currentUsers.add(driver);
+        }catch (IllegalStateException e) {
+
+        }
+
 
         // за таблицата с user_id - package_id
         User userSender = userRepository.findAll().stream().filter(user -> user.getEmail().equals(p.getSenderEmail())).findFirst().orElse(userSender = null);
@@ -107,6 +114,17 @@ public class PackageService {
             currentUsers.add(userReceiver);
         }
         p.setPackageUsers(currentUsers);
+        LocalDateTime localDateTime = LocalDateTime.now();
+        p.setDateOfRequest(localDateTime);
+
+        if(flag == 0) {
+            p.setePackageStatus(EPackageStatus.REQUESTED);
+        } else {
+            p.setePackageStatus(EPackageStatus.REGISTERED);
+            p.setDateOfRegistration(localDateTime);
+            mailFunctions.sendEmail(privateCode, p.getSenderEmail(), p.getReceiverEmail());
+            mailFunctions.sendEmailReceiver(p.getReceiverEmail(), p.getSenderFirstName(),privateCode, p.getFromCity(),p.getFromAddress(),p.isFromOffice(),p.getDateOfDelivery().plusDays(2).toString());
+        }
 
     }
 //
@@ -177,18 +195,11 @@ public class PackageService {
                 addPackageRequest.getAlternativeCity()
         );
 
-        p.setePackageStatus(EPackageStatus.REQUESTED);
         String privateCode = Functions.generatePrivateCode();
         p.setPrivateCode(privateCode);
-        LocalDateTime localDateTime = LocalDateTime.now();
-        p.setDateOfRequest(localDateTime);
-        p.setDateOfRegistration(localDateTime);
         p.setPrice(5.5);
-
-        this.addAllPossibleUsersToPackage(p);
-
+        this.addAllPossibleUsersToPackage(p, privateCode);
         packageRepo.saveAndFlush(p);
-        //  mailFunctions.sendEmail(privateCode, p.getSenderEmail(), p.getReceiverEmail());
         return ResponseEntity.ok(p.toString());
     }
 

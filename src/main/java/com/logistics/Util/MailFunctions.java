@@ -30,10 +30,18 @@ public class MailFunctions {
         messageBuilder.setText(MailTemplates.buildSenderMail(senderEmail,privateCode), true);
         javaMailSender.send(message);
 
-
         return ResponseEntity.ok(null);
-
-
     }
 
+    public ResponseEntity<Object> sendEmailReceiver(String receiverEmail, String firstName, String code, String city, String address, boolean isOffice, String date) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper messageBuilder = new MimeMessageHelper(message, true);
+        messageBuilder.setFrom("needylogisticcomapny@gmail.com");
+        messageBuilder.setTo(receiverEmail);
+        messageBuilder.setSubject(MailTemplates.receiverSubject_mail);
+        messageBuilder.setText(MailTemplates.buildReceiverMail(firstName,  code,  city,  address,  isOffice,  date), true);
+        javaMailSender.send(message);
+
+        return ResponseEntity.ok(null);
+    }
 }
