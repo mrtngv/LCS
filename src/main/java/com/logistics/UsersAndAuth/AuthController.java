@@ -100,38 +100,88 @@ public class AuthController {
             Role userRole = roleRepository.findByName(ERoles.ROLE_CLIENT)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "employee":
-                        Role officeRole = roleRepository.findByName(ERoles.ROLE_OFFICE_EMPLOYEE)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(officeRole);
-
-                        break;
-                    case "delivery":
-                        Role deliveryRole = roleRepository.findByName(ERoles.ROLE_DELIVERY)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(deliveryRole);
-
-                        break;
-                    case "mod":
-                        Role modRole = roleRepository.findByName(ERoles.ROLE_MODERATOR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
-
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName(ERoles.ROLE_CLIENT)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
         }
+
+//        else {
+//            strRoles.forEach(role -> {
+//                switch (role) {
+//                    case "employee":
+//                        Role officeRole = roleRepository.findByName(ERoles.ROLE_OFFICE_EMPLOYEE)
+//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//                        roles.add(officeRole);
+//
+//                        break;
+//                    case "delivery":
+//                        Role deliveryRole = roleRepository.findByName(ERoles.ROLE_DELIVERY)
+//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//                        roles.add(deliveryRole);
+//
+//                        break;
+//                    case "mod":
+//                        Role modRole = roleRepository.findByName(ERoles.ROLE_MODERATOR)
+//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//                        roles.add(modRole);
+//
+//                        break;
+//                    default:
+//                        Role userRole = roleRepository.findByName(ERoles.ROLE_CLIENT)
+//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//                        roles.add(userRole);
+//                }
+//            });
+//        }
 
         user.setRoles(roles);
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
+    @PostMapping("/edit")
+    public ResponseEntity<?> editUser(@Valid @RequestBody SignupRequest signUpRequest) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Username is already taken!"));
+        }
+
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Email is already in use!"));
+        }
+
+        try{
+            UserDetailsImplementation userDetails = (UserDetailsImplementation) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = userRepository.findByUsername(userDetails.getUsername()).orElse(user = null);
+            if(user!= null) {
+                user.setEmail(signUpRequest.getEmail());
+                user.setUsername(signUpRequest.getUsername());
+                user.setPassword(encoder.encode(signUpRequest.getPassword()));
+                userRepository.saveAndFlush(user);
+                return ResponseEntity.ok(new MessageResponse("Data modified successfully!"));
+            }
+        }catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return ResponseEntity.ok(new MessageResponse("There was a problem when modifying your data."));
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteUser() {
+        try{
+            UserDetailsImplementation userDetails = (UserDetailsImplementation) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = userRepository.findByUsername(userDetails.getUsername()).orElse(user = null);
+            if(user!= null) {
+                user.setEmail(user.getEmail()+"del");
+                user.setUsername(user.getUsername()+"del");
+                userRepository.saveAndFlush(user);
+                return ResponseEntity.ok(new MessageResponse("Your account was deleted successfully."));
+            }
+        }catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return ResponseEntity.ok(new MessageResponse("There was a problem when deleting your data."));
+    }
+
 }
