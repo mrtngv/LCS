@@ -27,7 +27,7 @@ public class PackageController {
         return packageService.addPackage(addPackageRequest);
     }
 
-    @GetMapping("/specific")
+    @PostMapping("/specific")
     public ResponseEntity<Object> getPackageByPrivateCode(@RequestBody PrivateCodeRequest privateCodeRequest) {
         return packageService.getPackageByPrivateCode(privateCodeRequest.getCode());
     }
