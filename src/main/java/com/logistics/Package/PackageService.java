@@ -22,6 +22,7 @@ import javax.mail.MessagingException;
 import java.lang.reflect.Executable;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -55,7 +56,36 @@ public class PackageService {
     }
 
     public List<Package> getPackages() {
-        return packageRepo.findAll();
+        String role = this.getUltimateAuthorization();
+        if(role.equals("NO_ROLE")){
+            return new ArrayList<Package>();
+        }
+
+
+            try {
+                UserDetailsImplementation userDetails = (UserDetailsImplementation) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+                if (role.equals(ERoles.ROLE_CLIENT.toString())){
+
+                    final User user = userRepository
+                            .findAll()
+                            .stream()
+                            .filter(u -> u.getId() == userDetails.getId()).findFirst().orElseThrow(() -> new IllegalStateException("Not such user"));
+                    if(user != null) {
+                        return packageRepo
+                                .findAll()
+                                .stream()
+                                .filter(p -> p.getPackageUsers().contains(user))
+                                .collect(Collectors.toList());
+                    }
+                } else {
+                    return packageRepo.findAll();
+                }
+            } catch (Exception e) {
+                System.out.println("Not Authenticated User!");
+            }
+
+        return new ArrayList<Package>();
     }
 
     private User calculateDriver() {
