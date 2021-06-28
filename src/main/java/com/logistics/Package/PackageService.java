@@ -225,7 +225,12 @@ public class PackageService {
 
         String privateCode = Functions.generatePrivateCode();
         p.setPrivateCode(privateCode);
-        p.setPrice(5.5);
+        double price = (addPackageRequest.getWeight()*0.30) + 1.50;
+        if(!addPackageRequest.getFromOffice())
+            price+=2;
+        if(!addPackageRequest.getToOffice())
+            price+=2;
+        p.setPrice(price);
         this.addAllPossibleUsersToPackage(p, privateCode);
         packageRepo.saveAndFlush(p);
         return ResponseEntity.ok(p.toString());
@@ -236,5 +241,41 @@ public class PackageService {
         if (packageToReturn.isPresent())
             return ResponseEntity.ok().body(packageToReturn);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseConstants.PACKAGE_NOT_FOUND.getResponseMessage());
+    }
+
+
+    public double getRevenue(RevenueRequest revenueRequest) {
+
+
+        List<Package> all = this.packageRepo.findAll();
+        double revenue = 0.0;
+        if(revenueRequest.getFromDate() !=null && revenueRequest.getToDate() !=null){
+            for(Package p: all) {
+                if(p.getDateOfRegistration() !=null && p.getDateOfRegistration().toLocalDate().isAfter(revenueRequest.getFromDate()) && p.getDateOfRegistration().toLocalDate().isBefore(revenueRequest.getToDate()))
+                revenue+=p.getPrice();
+            }
+            return revenue;
+        }
+        if(revenueRequest.getFromDate() != null){
+            for(Package p: all) {
+                if(p.getDateOfRegistration() !=null && p.getDateOfRegistration().toLocalDate().isAfter(revenueRequest.getFromDate()))
+                    revenue+=p.getPrice();
+            }
+            return revenue;
+
+        }
+        if(revenueRequest.getToDate() !=null){
+            for(Package p: all) {
+                if( p.getDateOfRegistration() !=null && p.getDateOfRegistration().toLocalDate().isBefore(revenueRequest.getToDate()))
+                    revenue+=p.getPrice();
+            }
+            return revenue;
+        }
+
+        for(Package p: all) {
+            if(p.getDateOfRegistration() !=null)
+            revenue+=p.getPrice();
+        }
+return revenue;
     }
 }

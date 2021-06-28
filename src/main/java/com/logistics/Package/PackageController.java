@@ -3,6 +3,7 @@ package com.logistics.Package;
 import javassist.tools.web.BadHttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -30,6 +31,12 @@ public class PackageController {
     @PostMapping("/specific")
     public ResponseEntity<Object> getPackageByPrivateCode(@RequestBody PrivateCodeRequest privateCodeRequest) {
         return packageService.getPackageByPrivateCode(privateCodeRequest.getCode());
+    }
+
+    @PreAuthorize("hasRole('MODERATOR')")
+    @PostMapping("/revenue")
+    public double getRevenue(@RequestBody RevenueRequest revenueRequest){
+        return packageService.getRevenue(revenueRequest);
     }
 
     @GetMapping
