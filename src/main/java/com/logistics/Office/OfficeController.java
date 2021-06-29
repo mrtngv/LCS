@@ -39,10 +39,9 @@ public class OfficeController {
         officeService.addOffice(office);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Office> updateOffice(@PathVariable(value = "id") Long officeId,
-                                               @RequestBody Office officeDetails) {
-        return officeService.updateOffice(officeId, officeDetails);
+    @PutMapping
+    public ResponseEntity<Office> updateOffice(@RequestBody Office officeDetails) {
+        return officeService.updateOffice(officeDetails);
     }
 
     @DeleteMapping("/{id}")
