@@ -150,8 +150,12 @@ public class PackageService {
         } else {
             p.setePackageStatus(EPackageStatus.REGISTERED);
             p.setDateOfRegistration(localDateTime);
-            mailFunctions.sendEmail(privateCode, p.getSenderEmail(), p.getReceiverEmail());
-            mailFunctions.sendEmailReceiver(p.getReceiverEmail(), p.getSenderFirstName(),privateCode, p.getFromCity(),p.getFromAddress(),p.isFromOffice(),p.getDateOfDelivery().plusDays(2).toString());
+            try {
+                mailFunctions.sendEmail(privateCode, p.getSenderEmail(), p.getReceiverEmail());
+                mailFunctions.sendEmailReceiver(p.getReceiverEmail(), p.getSenderFirstName(), privateCode, p.getFromCity(), p.getFromAddress(), p.isFromOffice(), p.getDateOfDelivery().plusDays(2).toString());
+            }catch (Exception e){
+
+            }
         }
 
     }
