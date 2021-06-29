@@ -13,7 +13,6 @@ public class OfficeService {
 
     private final OfficeRepository officeRepository;
 
-
     @Autowired
     public OfficeService(OfficeRepository officeRepository) {
         this.officeRepository = officeRepository;
@@ -23,7 +22,6 @@ public class OfficeService {
         return officeRepository.findAll();
     }
 
-
     public void deleteById(Long id) {
         if (officeRepository.existsById(id)) {
             officeRepository.deleteById(id);
@@ -31,7 +29,6 @@ public class OfficeService {
             throw new IllegalStateException("Office does not exist");
         }
     }
-
 
     public Office addOffice(Office office) {
         Optional<Office> foundOffice = officeRepository.findByLocation(office.getLocation());

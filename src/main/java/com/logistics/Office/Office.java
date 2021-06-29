@@ -1,4 +1,6 @@
 package com.logistics.Office;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -29,6 +31,20 @@ public class Office {
     @Size(max = 50)
     @Column(name = "location", nullable = false)
     private String location;
+
+    @JsonBackReference
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "office_working_hours",
+            joinColumns = @JoinColumn(
+                    name = "office_id",
+                    referencedColumnName = "office_id"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "officeWorkingHours_id",
+                    referencedColumnName = "officeWorkingHours_id"
+            ))
+    private OfficeWorkingHours officeWorkingHours;
 
     public Long getId() {
         return id;
@@ -66,6 +82,7 @@ public class Office {
         this.name = name;
         this.city = city;
         this.location = location;
+        this.officeWorkingHours = new OfficeWorkingHours();
     }
 
     public Office() {
@@ -85,6 +102,7 @@ public class Office {
                 ", name='" + name + '\'' +
                 ", city='" + city + '\'' +
                 ", location='" + location + '\'' +
+                ", workingHours='" + officeWorkingHours + '\'' +
                 '}';
     }
 
