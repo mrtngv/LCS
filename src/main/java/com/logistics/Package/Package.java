@@ -491,7 +491,7 @@ public class Package {
         this.returnLocation = returnLocation;
         this.dateOfDelivery = dateOfDelivery;
         this.dateOfSending = dateOfSending;
-        this.toFirm = isFirm;
+        this.toFirm = toFirm;
         this.toFirmName = toFirmName;
         this.fromCity = fromCity;
         this.toCity = toCity;
