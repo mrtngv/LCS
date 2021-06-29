@@ -204,6 +204,85 @@ public class Package {
     @Column(name="dateOfSending")
     private LocalDate dateOfSending;
 
+    @Column(name="cashOnDelivery")
+    private double cashOnDelivery;
+
+    @Column(name="iban")
+    private String iban;
+
+    @Column(name="isCashOnDelivery")
+    private boolean isCashOnDelivery;
+
+    @Column(name="bic")
+    private String bic;
+
+    @Column(name="bank")
+    private String bank;
+
+    @Column(name="bankAccountOwner")
+    private String bankAccountOwner;
+
+    @Column(name="returnCashToOffice")
+    private boolean returnCashToOffice;
+
+    public double getCashOnDelivery() {
+        return cashOnDelivery;
+    }
+
+    public void setCashOnDelivery(double cashOnDelivery) {
+        this.cashOnDelivery = cashOnDelivery;
+    }
+
+
+
+    public boolean getIsCashOnDelivery() {
+        return isCashOnDelivery;
+    }
+
+    public void setIsCashOnDelivery(boolean cashOnDelivery) {
+        isCashOnDelivery = cashOnDelivery;
+    }
+
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
+
+    public String getBic() {
+        return bic;
+    }
+
+    public void setBic(String bic) {
+        this.bic = bic;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    public String getBankAccountOwner() {
+        return bankAccountOwner;
+    }
+
+    public void setBankAccountOwner(String bankAccountOwner) {
+        this.bankAccountOwner = bankAccountOwner;
+    }
+
+    public boolean getIsReturnCashToOffice() {
+        return returnCashToOffice;
+    }
+
+    public void setIsReturnCashToOffice(boolean returnCashToOffice) {
+        this.returnCashToOffice = returnCashToOffice;
+    }
+
     public Long getId() {
         return id;
     }
