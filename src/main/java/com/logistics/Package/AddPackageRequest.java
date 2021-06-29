@@ -105,6 +105,26 @@ public class AddPackageRequest {
 
     private boolean returnCashToOffice;
 
+    private String returnCashCity;
+
+    public String getReturnCashCity() {
+        return returnCashCity;
+    }
+
+    public void setReturnCashCity(String returnCashCity) {
+        this.returnCashCity = returnCashCity;
+    }
+
+    public String getReturnCashAddress() {
+        return returnCashAddress;
+    }
+
+    public void setReturnCashAddress(String returnCashAddress) {
+        this.returnCashAddress = returnCashAddress;
+    }
+
+    private String returnCashAddress;
+
     public double getCashOnDelivery() {
         return cashOnDelivery;
     }

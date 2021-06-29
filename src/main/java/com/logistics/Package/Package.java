@@ -219,6 +219,28 @@ public class Package {
     @Column(name="bank")
     private String bank;
 
+    @Column(name="returnCashCity")
+    private String returnCashCity;
+
+    @Column(name="returnCashAddress")
+    private String returnCashAddress;
+
+    public String getReturnCashCity() {
+        return returnCashCity;
+    }
+
+    public void setReturnCashCity(String returnCashCity) {
+        this.returnCashCity = returnCashCity;
+    }
+
+    public String getReturnCashAddress() {
+        return returnCashAddress;
+    }
+
+    public void setReturnCashAddress(String returnCashAddress) {
+        this.returnCashAddress = returnCashAddress;
+    }
+
     @Column(name="bankAccountOwner")
     private String bankAccountOwner;
 

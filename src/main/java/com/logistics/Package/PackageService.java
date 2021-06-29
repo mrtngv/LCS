@@ -232,6 +232,8 @@ public class PackageService {
         p.setBank(addPackageRequest.getBank());
         p.setBankAccountOwner(addPackageRequest.getBankAccountOwner());
         p.setIsReturnCashToOffice(addPackageRequest.getReturnCashToOffice());
+        p.setReturnCashAddress(addPackageRequest.getReturnCashAddress());
+        p.setReturnCashCity(addPackageRequest.getReturnCashCity());
 
         String privateCode = Functions.generatePrivateCode();
         p.setPrivateCode(privateCode);
