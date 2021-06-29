@@ -2,6 +2,7 @@ package com.logistics.UsersAndAuth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -93,44 +94,11 @@ public class AuthController {
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
 
-
-
-        // Автоматично трябва да става само Client Role !
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(ERoles.ROLE_CLIENT)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         }
-
-//        else {
-//            strRoles.forEach(role -> {
-//                switch (role) {
-//                    case "employee":
-//                        Role officeRole = roleRepository.findByName(ERoles.ROLE_OFFICE_EMPLOYEE)
-//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//                        roles.add(officeRole);
-//
-//                        break;
-//                    case "delivery":
-//                        Role deliveryRole = roleRepository.findByName(ERoles.ROLE_DELIVERY)
-//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//                        roles.add(deliveryRole);
-//
-//                        break;
-//                    case "mod":
-//                        Role modRole = roleRepository.findByName(ERoles.ROLE_MODERATOR)
-//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//                        roles.add(modRole);
-//
-//                        break;
-//                    default:
-//                        Role userRole = roleRepository.findByName(ERoles.ROLE_CLIENT)
-//                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//                        roles.add(userRole);
-//                }
-//            });
-//        }
-
         user.setRoles(roles);
         userRepository.save(user);
 
@@ -182,6 +150,46 @@ public class AuthController {
             System.out.println(e.toString());
         }
         return ResponseEntity.ok(new MessageResponse("There was a problem when deleting your data."));
+    }
+
+    @PreAuthorize("hasRole('MODERATOR')")
+    @GetMapping
+    public ResponseEntity<?> getAllUsers() {
+        List<User> allUsers = userRepository.findAll();
+        if(allUsers.size()!=0) {
+            return ResponseEntity.ok().body(allUsers);
+        }
+        //This line is impossible ;) M.Georgiev
+        return ResponseEntity.ok(new MessageResponse("There are not users at all"));
+    }
+
+    @PreAuthorize("hasRole('MODERATOR')")
+    @PostMapping
+    public ResponseEntity<?> updateRole(@RequestBody UpdateRoleRequest updateRoleRequest) {
+
+        User user = userRepository.findById(updateRoleRequest.getId()).orElse(user = null);
+        if(user == null) {
+            return ResponseEntity.ok(new MessageResponse("There is not user with id: " + updateRoleRequest.getId()));
+        }
+
+        Role userRole = roleRepository.findByName(updateRoleRequest.getRole()).orElse(userRole=null);
+        if(userRole==null) {
+            return ResponseEntity.ok(new MessageResponse("Wrong Role send!"));
+        }
+        if(updateRoleRequest.getAction().equals("addRole")) {
+            if(!user.getRoles().contains(userRole)) {
+                user.getRoles().add(userRole);
+                userRepository.saveAndFlush(user);
+                return ResponseEntity.ok(new MessageResponse("Role added successfully !"));
+            }
+        }else if (updateRoleRequest.getAction().equals("removeRole")){
+            if(user.getRoles().contains(userRole)) {
+                user.getRoles().remove(userRole);
+                userRepository.saveAndFlush(user);
+                return ResponseEntity.ok(new MessageResponse("Role removed successfully !"));
+            }
+        }
+        return ResponseEntity.ok(new MessageResponse("There was problem updating the roles of the user!"));
     }
 
 }
