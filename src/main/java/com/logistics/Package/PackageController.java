@@ -33,6 +33,7 @@ public class PackageController {
         return packageService.getPackageByPrivateCode(privateCodeRequest.getCode());
     }
 
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('OFFICE_EMPLOYEE') or hasRole('DELIVERY')")
     @GetMapping("/{packageID}")
     public ResponseEntity<Object> getPackageById(@PathVariable("packageID") Long id) {
         return packageService.getPackageById(id);
