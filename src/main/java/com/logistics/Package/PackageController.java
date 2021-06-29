@@ -33,6 +33,11 @@ public class PackageController {
         return packageService.getPackageByPrivateCode(privateCodeRequest.getCode());
     }
 
+    @GetMapping("/{packageID}")
+    public ResponseEntity<Object> getPackageById(@PathVariable("packageID") Long id) {
+        return packageService.getPackageById(id);
+    }
+
     @PreAuthorize("hasRole('MODERATOR')")
     @PostMapping("/revenue")
     public double getRevenue(@RequestBody RevenueRequest revenueRequest){
