@@ -4,11 +4,15 @@ public enum ValidationConstants {
     NULL("не може да бъде празно!"),
     INVALID_CHARACTERS("не може да съдържа невалидни символи!"),
     EMPTY("не може да бъде празно!"),
-    TO_LONG("е прекалено дълго!");
+    TOО_LONG("е прекалено дълго!"),
+    TOO_SHORT("е прекалено късо!"),
+    INVALID_EMAIL("е невалиден емайл!")
+    ;
 
-            private String errorMessage;
 
-            ValidationConstants(String errorMessage) {
+    private String errorMessage;
+
+    ValidationConstants(String errorMessage) {
             this.errorMessage = errorMessage;
     }
 

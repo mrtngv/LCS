@@ -189,6 +189,13 @@ public class PackageService {
         // TODO extend validations as the example below -
         try {
             PackageValidations.validateName(addPackageRequest.getSenderFirstName(), FieldsContants.FIRSTNAME.getField());
+            PackageValidations.validateName(addPackageRequest.getReceiverFirstName(), FieldsContants.FIRSTNAME2.getField());
+            PackageValidations.validateName(addPackageRequest.getSenderLastName(), FieldsContants.LASTNAME.getField());
+            PackageValidations.validateName(addPackageRequest.getReceiverLastName(), FieldsContants.LASTNAME2.getField());
+            PackageValidations.validateTelephoneNumber(addPackageRequest.getReceiverTelephoneNumber(), FieldsContants.RECEIVERNUMBER.getField());
+            PackageValidations.validateTelephoneNumber(addPackageRequest.getSenderTelephoneNumber(), FieldsContants.SENDERNUMBER.getField());
+            PackageValidations.validateEmail(addPackageRequest.getReceiverEmail(), FieldsContants.RECEIVEREMAIL.getField());
+            PackageValidations.validateEmail(addPackageRequest.getSenderEmail(), FieldsContants.SENDEREMAIL.getField());
         } catch (DataFormatException d) {
             String error = Functions.getErrorMessage(d.toString());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
