@@ -282,4 +282,13 @@ public class PackageService {
         }
 return revenue;
     }
+
+    public ResponseEntity<Object> getPackageById(Long id) {
+        Package package1 = packageRepo.findById(id).orElse(package1 = null);
+        if(package1 == null) {
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseConstants.PACKAGE_NOT_FOUND.getResponseMessage());
+        }
+        return ResponseEntity.ok().body(package1);
+    }
 }
