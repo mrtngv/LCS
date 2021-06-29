@@ -91,6 +91,76 @@ public class AddPackageRequest {
     @NotBlank
     private boolean returnToOffice;
 
+    private double cashOnDelivery;
+
+    private String IBAN;
+
+    private boolean isCashOnDelivery;
+
+    private String BIC;
+
+    private String bank;
+
+    private String bankAccountOwner;
+
+    private boolean returnCashToOffice;
+
+    public double getCashOnDelivery() {
+        return cashOnDelivery;
+    }
+
+    public void setCashOnDelivery(double cashOnDelivery) {
+        this.cashOnDelivery = cashOnDelivery;
+    }
+
+    public String getIBAN() {
+        return IBAN;
+    }
+
+    public void setIBAN(String IBAN) {
+        this.IBAN = IBAN;
+    }
+
+    public boolean getIsCashOnDelivery() {
+        return isCashOnDelivery;
+    }
+
+    public void setIsCashOnDelivery(boolean cashOnDelivery) {
+        isCashOnDelivery = cashOnDelivery;
+    }
+
+    public String getBIC() {
+        return BIC;
+    }
+
+    public void setBIC(String BIC) {
+        this.BIC = BIC;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    public String getBankAccountOwner() {
+        return bankAccountOwner;
+    }
+
+    public void setBankAccountOwner(String bankAccountOwner) {
+        this.bankAccountOwner = bankAccountOwner;
+    }
+
+    public boolean getReturnCashToOffice() {
+        return returnCashToOffice;
+    }
+
+    public void setReturnCashToOffice(boolean returnCashToOffice) {
+        this.returnCashToOffice = returnCashToOffice;
+    }
+
     public boolean getToFirm() {
         return toFirm;
     }

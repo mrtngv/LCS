@@ -225,6 +225,14 @@ public class PackageService {
                 addPackageRequest.getAlternativeCity()
         );
 
+        p.setCashOnDelivery(addPackageRequest.getCashOnDelivery());
+        p.setIban(addPackageRequest.getIBAN());
+        p.setIsCashOnDelivery(addPackageRequest.getIsCashOnDelivery());
+        p.setBic(addPackageRequest.getBIC());
+        p.setBank(addPackageRequest.getBank());
+        p.setBankAccountOwner(addPackageRequest.getBankAccountOwner());
+        p.setIsReturnCashToOffice(addPackageRequest.getReturnCashToOffice());
+
         String privateCode = Functions.generatePrivateCode();
         p.setPrivateCode(privateCode);
         double price = (addPackageRequest.getWeight()*0.30) + 1.50;
