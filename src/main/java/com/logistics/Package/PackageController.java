@@ -32,6 +32,11 @@ public class PackageController {
     public ResponseEntity<?> editPackage(@RequestBody EditPackageRequest editPackageRequest){
         return packageService.editPackage(editPackageRequest);
     }
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('OFFICE_EMPLOYEE') or hasRole('DELIVERY') ")
+    @PutMapping("/status")
+    public ResponseEntity<?> editStatus(@RequestBody EditEPackageStatus editEPackageStatus){
+        return packageService.editStatus(editEPackageStatus);
+    }
 
     @PostMapping("/specific")
     public ResponseEntity<Object> getPackageByPrivateCode(@RequestBody PrivateCodeRequest privateCodeRequest) {
