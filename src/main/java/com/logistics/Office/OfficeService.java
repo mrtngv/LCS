@@ -13,7 +13,6 @@ public class OfficeService {
 
     private final OfficeRepository officeRepository;
 
-
     @Autowired
     public OfficeService(OfficeRepository officeRepository) {
         this.officeRepository = officeRepository;
@@ -43,12 +42,15 @@ public class OfficeService {
         }
     }
 
-    public ResponseEntity<Office> updateOffice(Long officeId, Office officeDetails) {
-        Office office = officeRepository.findById(officeId)
-                .orElseThrow(() -> new IllegalStateException("Office with id: " + officeId + " does not exist."));
+    public ResponseEntity<Office> updateOffice(Office officeDetails) {
+        Office office = officeRepository.findById(officeDetails.getId())
+                .orElseThrow(() -> new IllegalStateException("Office with id: " + officeDetails.getId() + " does not exist."));
         office.setName(officeDetails.getName());
         office.setCity(officeDetails.getCity());
         office.setLocation(officeDetails.getLocation());
+        office.setWeekdayHours(officeDetails.getWeekdayHours());
+        office.setSaturdayHours(officeDetails.getSaturdayHours());
+        office.setSundayHours(officeDetails.getSundayHours());
         final Office updatedOffice = officeRepository.save(office);
         return ResponseEntity.ok(updatedOffice);
     }

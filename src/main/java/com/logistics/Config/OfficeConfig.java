@@ -21,12 +21,12 @@ public class OfficeConfig {
             /*
                 Adding initial hardcoded data just for test
              */
-            Office ekont1 = new Office("blackGOLD_003", "Sofia","ul. Slavqni 1");
-            Office ekont5 = new Office("blackGOLD_004", "Sofia","ul. Triadica 3");
-            Office ekont6 = new Office("blackGOLD_001", "Sofia","ul. ILUMINATI 666");
-            Office ekont2 = new Office("roseGOLD_002", "Plovdiv","ul. Gospel 32");
-            Office ekont3 = new Office("roseGOLD_003", "Plovdiv","bul. Cheshmqna voda 120");
-            Office ekont4 = new Office("roseGOLD_004", "Plovdiv","kvartal Tepe ul. mrunkalo 2");
+            Office ekont1 = new Office("blackGOLD_003", "Sofia","ul. Slavqni 1", "10:00 - 17:00", "09:00 - 13:00", null);
+            Office ekont5 = new Office("blackGOLD_004", "Sofia","ul. Triadica 3", "09:00 - 9:00", "09:00 - 13:00", null);
+            Office ekont6 = new Office("blackGOLD_001", "Sofia","ul. ILUMINATI 666", "10:00 - 17:00", "09:00 - 13:00", null);
+            Office ekont2 = new Office("roseGOLD_002", "Plovdiv","ul. Gospel 32", "10:00 - 17:00", "09:00 - 13:00", null);
+            Office ekont3 = new Office("roseGOLD_003", "Plovdiv","bul. Cheshmqna voda 120", "10:00 - 17:00", "09:00 - 13:00", null);
+            Office ekont4 = new Office("roseGOLD_004", "Plovdiv","kvartal Tepe ul. mrunkalo 2", "10:00 - 17:00", "09:00 - 13:00", null);
             officeRepo.saveAll(Arrays.asList(ekont1, ekont2,ekont3,ekont4,ekont5,ekont6));
 
 //            User user1 = new User("NIGHTWOLF", "nightwolf@gmail.com", "hello1234");
