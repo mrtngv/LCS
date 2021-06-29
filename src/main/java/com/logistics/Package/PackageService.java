@@ -60,8 +60,6 @@ public class PackageService {
         if(role.equals("NO_ROLE")){
             return new ArrayList<Package>();
         }
-
-
             try {
                 UserDetailsImplementation userDetails = (UserDetailsImplementation) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -186,7 +184,7 @@ public class PackageService {
     public ResponseEntity<String> addPackage(AddPackageRequest addPackageRequest) throws MessagingException {
         // TODO {if the user is office User then -> assign himself as a reporter, calculate the driver and check if the telephone number of the sender}
         // TODO {If the user is CLIENT, only the user is the set, until Office_user accepts the package and assign himself as a reporter and then calculate the free driver}
-        // TODO calculate the free driver which is going to be assigned
+        // TODO calculate the free driver which is going  to be assigned
 
         // TODO extend validations as the example below -
         try {
@@ -249,8 +247,6 @@ public class PackageService {
 
 
     public double getRevenue(RevenueRequest revenueRequest) {
-
-
         List<Package> all = this.packageRepo.findAll();
         double revenue = 0.0;
         if(revenueRequest.getFromDate() !=null && revenueRequest.getToDate() !=null){
@@ -280,7 +276,7 @@ public class PackageService {
             if(p.getDateOfRegistration() !=null)
             revenue+=p.getPrice();
         }
-return revenue;
+        return revenue;
     }
 
     public ResponseEntity<Object> getPackageById(Long id) {
@@ -291,4 +287,22 @@ return revenue;
         }
         return ResponseEntity.ok().body(package1);
     }
+
+    public ResponseEntity<?> editPackage(EditPackageRequest packageDetails) {
+        Package packagee = packageRepo.findById(packageDetails.getId())
+                .orElse(packagee=null);
+        if (packagee==null) {
+            return ResponseEntity.ok(new MessageResponse("Didn't find a package with this id: " + packageDetails.getId()));
+        }
+        packagee.setSenderTelephoneNumber(packageDetails.getSenderTelephoneNumber());
+        packagee.setReceiverTelephoneNumber(packageDetails.getReceiverTelephoneNumber());
+        packagee.setToCity(packageDetails.getToCity());
+        packagee.setToAddress(packageDetails.getToAddress());
+        packagee.setAlternativeCity(packageDetails.getAlternativeCity());
+        packagee.setReturnLocation(packageDetails.getReturnLocation());
+        packagee.setDateOfDelivery(packageDetails.getDateOfDelivery());
+        packageRepo.save(packagee);
+        return ResponseEntity.ok(packagee);
+    }
+
 }

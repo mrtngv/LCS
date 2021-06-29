@@ -28,6 +28,11 @@ public class PackageController {
         return packageService.addPackage(addPackageRequest);
     }
 
+    @PutMapping
+    public ResponseEntity<?> editPackage(@RequestBody EditPackageRequest editPackageRequest){
+        return packageService.editPackage(editPackageRequest);
+    }
+
     @PostMapping("/specific")
     public ResponseEntity<Object> getPackageByPrivateCode(@RequestBody PrivateCodeRequest privateCodeRequest) {
         return packageService.getPackageByPrivateCode(privateCodeRequest.getCode());
