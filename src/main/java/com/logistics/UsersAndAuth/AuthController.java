@@ -1,6 +1,8 @@
 package com.logistics.UsersAndAuth;
 
+import com.logistics.Util.ResponseConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -192,4 +194,20 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("There was problem updating the roles of the user!"));
     }
 
+    @PreAuthorize("hasRole('MODERATOR')")
+    @GetMapping("/{packageID}")
+    public ResponseEntity<?> deleteUserPerm(@PathVariable("packageID") Long id) {
+
+        User userToBeDeleted = userRepository.findById(id).orElse(userToBeDeleted=null);
+        if(userToBeDeleted == null) {
+            return ResponseEntity.ok(new MessageResponse("There is not any user with id: " + id));
+        }
+
+        try{
+            userRepository.delete(userToBeDeleted);
+            return ResponseEntity.ok(new MessageResponse("user with id: " + id+ " has been deleted!"));
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
+        }
+    }
 }
