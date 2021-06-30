@@ -43,7 +43,7 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     public static AboutCompany  aboutCompany = new AboutCompany("Needy Logistics",
-            "Приложението Логистична Компания е задание към курс CSCB025 Практика по програмиране и по реализация на бази данни към Нов Български Университе. \n  Проектът е базиран на Java Spring boot, като се използват: \n Spring Security, Java mail Sender, Jpa, Spring Web и др. \n За База Данни използваме Postgre SQL, а за FrontEnd - Node Js с React и Sap ui5 web компоненти.",
+            "Приложението Логистична Компания е задание към курс CSCB025 Практика по програмиране и по реализация на бази данни към Нов Български Университет. \n  Проектът е базиран на Java Spring boot, като се използват: \n Spring Security, Java mail Sender, Jpa, Spring Web и др. \n За База Данни използваме Postgre SQL, а за FrontEnd - Node Js с React и Sap ui5 web компоненти.",
             "Мартин Георгиев",
             "Екатерина Герасимова",
             "Марта Гюрова",
