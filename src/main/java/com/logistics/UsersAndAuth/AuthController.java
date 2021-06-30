@@ -1,5 +1,7 @@
 package com.logistics.UsersAndAuth;
 
+import com.logistics.Package.Package;
+import com.logistics.Package.PackageRepository;
 import com.logistics.Util.ResponseConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,9 @@ public class AuthController {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    PackageRepository packageRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -195,13 +200,24 @@ public class AuthController {
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
-    @GetMapping("/{packageID}")
+    @DeleteMapping("/{packageID}")
     public ResponseEntity<?> deleteUserPerm(@PathVariable("packageID") Long id) {
 
         User userToBeDeleted = userRepository.findById(id).orElse(userToBeDeleted=null);
         if(userToBeDeleted == null) {
             return ResponseEntity.ok(new MessageResponse("There is not any user with id: " + id));
         }
+
+        List<Package> packages = packageRepository.findAll();
+        for(Package p : packages) {
+            if(p.getPackageUsers().contains(userToBeDeleted)) {
+                p.getPackageUsers().remove(userToBeDeleted);
+                packageRepository.save(p);
+            }
+        }
+
+        userToBeDeleted.setRoles(new HashSet<>());
+        userRepository.saveAndFlush(userToBeDeleted);
 
         try{
             userRepository.delete(userToBeDeleted);
