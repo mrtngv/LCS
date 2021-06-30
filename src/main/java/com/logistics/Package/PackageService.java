@@ -320,7 +320,7 @@ public class PackageService {
         ptbc.setePackageStatus(editEPackageStatus.getePackageStatus());
         if(ptbc.getePackageStatus() == EPackageStatus.DECLINED){
             try {
-                mailFunctions.sendRejectedEmail(ptbc.getSenderEmail(),ptbc.getSenderFirstName(),ptbc.getPrivateCode());
+                mailFunctions.sendRejectedEmail(ptbc.getSenderEmail(),ptbc.getSenderFirstName(),ptbc.getPrivateCode(), ptbc.isFromOffice(),  ptbc.getReturnLocation(), ptbc.getAlternativeCity());
             } catch (MessagingException e) {
                 e.printStackTrace();
             }

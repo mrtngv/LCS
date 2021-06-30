@@ -19,8 +19,14 @@ public class MailTemplates {
         return buildFirstPart(firstName) + buildMiddlePartSender(code) + mailTemplate1_end_part;
     }
 
-    public static String buildRejectedMail(String firstName, String code) {
-        return buildFirstPart(firstName) + mailTemplate2_middle_part + " Пратката ви с код " + code + " е отказана от получателя." + mailTemplate1_middle_part_afterCode + mailTemplate1_end_part;
+    public static String buildRejectedMail(String firstName, String code, String address, String city, boolean isOffice) {
+        String officeOrPrivateAddress = "на личен адрес: град ";
+        if (isOffice) {
+            officeOrPrivateAddress= "в офис: град ";
+        }
+        return buildFirstPart(firstName) + mailTemplate2_middle_part + " Пратката ви с код " + code + " е отказана от получателя." +
+                " Ще ви я върнем " + officeOrPrivateAddress + city + ", " + address + mailTemplate1_middle_part_afterCode + mailTemplate1_end_part;
+
     }
 
     public static String buildDeliveredMail(String firstName, String code) {
