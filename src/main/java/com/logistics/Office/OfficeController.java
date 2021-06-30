@@ -3,6 +3,7 @@ package com.logistics.Office;
 import com.logistics.UsersAndAuth.UserDetailsImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,16 +35,19 @@ public class OfficeController {
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasRole('MODERATOR')")
     @PostMapping
     public void addOffice(@RequestBody Office office) {
         officeService.addOffice(office);
     }
 
+    @PreAuthorize("hasRole('MODERATOR')")
     @PutMapping
     public ResponseEntity<Office> updateOffice(@RequestBody Office officeDetails) {
         return officeService.updateOffice(officeDetails);
     }
 
+    @PreAuthorize("hasRole('MODERATOR')")
     @DeleteMapping("/{id}")
     void deleteById(@PathVariable Long id) {
         officeService.deleteById(id);
@@ -53,6 +57,7 @@ public class OfficeController {
     public List<Office> findOfficesByLocation(@PathVariable(value = "city") String searchFor){
         return officeService.findOfficesByLocation(searchFor);
     }
+
     @GetMapping("/cities")
     public List<String> cities(){
         return officeService.cities();
