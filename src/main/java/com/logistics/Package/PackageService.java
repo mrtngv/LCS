@@ -308,6 +308,8 @@ public class PackageService {
         packagee.setAlternativeCity(packageDetails.getAlternativeCity());
         packagee.setReturnLocation(packageDetails.getReturnLocation());
         packagee.setDateOfDelivery(packageDetails.getDateOfDelivery());
+        packagee.setToOffice(packageDetails.getToOffice());
+        packagee.setReturnToOffice(packageDetails.getReturnToOffice());
         packageRepo.save(packagee);
         return ResponseEntity.ok(packagee);
     }
