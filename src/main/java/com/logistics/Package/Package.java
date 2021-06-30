@@ -17,7 +17,7 @@ import java.util.Set;
 @Table(
         name="packages"
 )
-public class Package {
+public class Package implements Comparable<Package> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -597,6 +597,10 @@ public class Package {
         this.fromCity = fromCity;
         this.toCity = toCity;
         this.alternativeCity = alternativeCity;
+    }
+    @Override
+    public int compareTo(Package p) {
+        return getDateOfRequest().compareTo(p.getDateOfRequest());
     }
 
     @Override
