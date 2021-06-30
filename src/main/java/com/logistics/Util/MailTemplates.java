@@ -20,12 +20,12 @@ public class MailTemplates {
     }
 
     public static String buildRejectedMail(String firstName, String code, String address, String city, boolean isOffice) {
-        String officeOrPrivateAddress = "на личен адрес: град ";
+        String officeOrPrivateAddress = "от куриер до личен адрес: град ";
         if (isOffice) {
-            officeOrPrivateAddress= "в офис: град ";
+            officeOrPrivateAddress= "до офис: град ";
         }
-        return buildFirstPart(firstName) + mailTemplate2_middle_part + " Пратката ви с код " + code + " е отказана от получателя." +
-                " Ще ви я върнем " + officeOrPrivateAddress + city + ", " + address + mailTemplate1_middle_part_afterCode + mailTemplate1_end_part;
+        return buildFirstPart(firstName) + mailTemplate2_middle_part + " Пратката Ви с код " + code + " е отказана от получателя " +
+                "и ще бъде върната " + officeOrPrivateAddress + city + ", " + address + mailTemplate1_middle_part_afterCode + mailTemplate1_end_part;
 
     }
 
