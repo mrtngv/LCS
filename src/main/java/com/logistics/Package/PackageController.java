@@ -38,6 +38,12 @@ public class PackageController {
         return packageService.editStatus(editEPackageStatus);
     }
 
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('OFFICE_EMPLOYEE') or hasRole('DELIVERY') ")
+    @GetMapping("/status/{packageID}")
+    public ResponseEntity<?> getAllRelatedStatuses(@PathVariable("packageID") Long id){
+        return packageService.getAllRelatedStatuses(id);
+    }
+
     @PostMapping("/specific")
     public ResponseEntity<Object> getPackageByPrivateCode(@RequestBody PrivateCodeRequest privateCodeRequest) {
         return packageService.getPackageByPrivateCode(privateCodeRequest.getCode());
