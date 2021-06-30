@@ -52,6 +52,28 @@ public class PackageService {
         this.mailFunctions = mailFunctions;
     }
 
+    public List<Package> getMyPackages() {
+        try {
+            UserDetailsImplementation userDetails = (UserDetailsImplementation) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+                final User user = userRepository
+                        .findAll()
+                        .stream()
+                        .filter(u -> u.getId() == userDetails.getId()).findFirst().orElseThrow(() -> new IllegalStateException("Not such user"));
+                if(user != null) {
+                    return packageRepo
+                            .findAll()
+                            .stream()
+                            .filter(p -> p.getPackageUsers().contains(user)).sorted().collect(Collectors.toList());
+                }
+
+        } catch (Exception e) {
+            System.out.println("Not Authenticated User!");
+        }
+
+        return new ArrayList<Package>();
+    }
+
     public List<Package> getPackages() {
         String role = this.getUltimateAuthorization();
         if(role.equals("NO_ROLE")){

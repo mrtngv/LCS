@@ -67,7 +67,13 @@ public class PackageController {
         return packageService.getPackages();
     }
 
-    @PreAuthorize("hasRole('MODERATOR')")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('OFFICE_EMPLOYEE') or hasRole('DELIVERY')")
+    @GetMapping("/mine")
+    public List<Package> getMyPackages() {
+        return packageService.getMyPackages();
+    }
+
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('OFFICE_EMPLOYEE') or hasRole('DELIVERY')")
     @DeleteMapping("/{packageID}")
     public ResponseEntity<Object>  deletePackage(@PathVariable("packageID") Long id) {
        return packageService.deletePackage(id);
