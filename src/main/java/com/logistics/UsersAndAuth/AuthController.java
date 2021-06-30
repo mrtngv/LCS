@@ -1,5 +1,6 @@
 package com.logistics.UsersAndAuth;
 
+import com.logistics.Package.EPackageStatus;
 import com.logistics.Package.Package;
 import com.logistics.Package.PackageRepository;
 import com.logistics.Util.ResponseConstants;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -247,7 +249,7 @@ public class AuthController {
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
-    @GetMapping("/statistics/one")
+    @GetMapping("/statistics")
     public Statistics getUsersPerRole() {
 
         Role a = roleRepository.findByName(ERoles.ROLE_OFFICE_EMPLOYEE)
@@ -256,17 +258,47 @@ public class AuthController {
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         Role c = roleRepository.findByName(ERoles.ROLE_CLIENT)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-
+        final Role userRole = roleRepository.findByName(ERoles.ROLE_OFFICE_EMPLOYEE).orElseThrow(() -> new IllegalStateException());
+        LocalDate n = LocalDate.now().minusDays(3);
 
         long one = userRepository.findAll().stream().filter(v -> v.getRoles().contains(a)).count();
         long two = userRepository.findAll().stream().filter(v -> v.getRoles().contains(b)).count();
         long three = userRepository.findAll().stream().filter(v -> v.getRoles().contains(c)).count();
+        long four = packageRepository.findAll().stream().filter(p -> p.getPackageUsers().stream().filter(u -> u.getRoles().contains(userRole)).findFirst().isPresent()).count();
+        long five = packageRepository.findAll().stream().count() - four;
+        long six = packageRepository.findAll().stream().filter(p -> p.getePackageStatus().name().equals(EPackageStatus.REGISTERED.toString()) && p.getDateOfRequest().toLocalDate().isAfter(n)).count();
+        long seven = packageRepository.findAll().stream().filter(p -> p.getePackageStatus().name().equals(EPackageStatus.ANNULLED.toString()) && p.getDateOfRequest().toLocalDate().isAfter(n)).count();
+        long eight = packageRepository.findAll().stream().filter(p -> p.getePackageStatus().name().equals(EPackageStatus.DELIVERED.toString()) && p.getDateOfRequest().toLocalDate().isAfter(n)).count();
+        long nine = packageRepository.findAll().stream().filter(p -> p.getePackageStatus().name().equals(EPackageStatus.IN_PROCESS_OF_DELIVERING.toString()) && p.getDateOfRequest().toLocalDate().isAfter(n)).count();
+        long ten = packageRepository.findAll().stream().filter(p -> p.getePackageStatus().name().equals(EPackageStatus.AWAITING_PICK_UP.toString()) && p.getDateOfRequest().toLocalDate().isAfter(n)).count();
+        double eleven = 0;
+        double twelve = 0;
+
+        List<Package> packages = packageRepository.findAll();
+        for(Package as : packages ) {
+            if(as.getDateOfRequest().toLocalDate().isAfter(n.minusDays(4))) {
+                eleven += as.getPrice();
+            }
+            twelve+=as.getPrice();
+        }
+
+        twelve = twelve - eleven;
+
+
 
         Statistics s = new Statistics();
         s.setStatistic1(one);
         s.setStatistic2(two);
         s.setStatistic3(three);
-        s.setStatistic4(one);
+        s.setStatistic4(four);
+        s.setStatistic5(five);
+        s.setStatistic6(six);
+        s.setStatistic7(seven);
+        s.setStatistic8(eight);
+        s.setStatistic9(nine);
+        s.setStatistic10(ten);
+        s.setStatistics17(eleven);
+        s.setStatistics18(twelve);
 
         return s;
     }
@@ -280,5 +312,6 @@ public class AuthController {
     @PostMapping("/aboutCompany")
     public void editAboutCompany(@RequestBody AboutCompany aboutCompanyRequest) {
        aboutCompany.setName(aboutCompanyRequest.getName());
+       aboutCompany.setAbout(aboutCompanyRequest.getAbout());
     }
 }
