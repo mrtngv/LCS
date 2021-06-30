@@ -35,6 +35,26 @@ public class EditPackageRequest {
     @Size(max = 100)
     private String returnLocation;
 
+    private boolean toOffice;
+
+    private boolean returnToOffice;
+
+    public boolean getToOffice() {
+        return toOffice;
+    }
+
+    public void setToOffice(boolean toOffice) {
+        this.toOffice = toOffice;
+    }
+
+    public boolean getReturnToOffice() {
+        return returnToOffice;
+    }
+
+    public void setReturnToOffice(boolean returnToOffice) {
+        this.returnToOffice = returnToOffice;
+    }
+
     @NotBlank
     private LocalDate dateOfDelivery;
 
