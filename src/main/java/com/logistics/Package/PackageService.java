@@ -315,4 +315,29 @@ public class PackageService {
         return ResponseEntity.ok(packagee);
     }
 
+    public ResponseEntity<?> editStatus(EditEPackageStatus editEPackageStatus) {
+        Package ptbc = packageRepo.findById(editEPackageStatus.getId()).orElse(ptbc = null);
+        if (ptbc == null) {
+            return ResponseEntity.ok(new MessageResponse("Didn't find a package with this id: " + editEPackageStatus.getId()));
+        }
+        ptbc.setePackageStatus(editEPackageStatus.getePackageStatus());
+        if(ptbc.getePackageStatus() == EPackageStatus.DECLINED){
+            try {
+                mailFunctions.sendRejectedEmail(ptbc.getSenderEmail(),ptbc.getSenderFirstName(),ptbc.getPrivateCode());
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+        }
+        if (ptbc.getePackageStatus() == EPackageStatus.COLLECTED || ptbc.getePackageStatus() == EPackageStatus.DELIVERED){
+            try {
+                mailFunctions.sendDeliveredEmail(ptbc.getSenderEmail(),ptbc.getSenderFirstName(),ptbc.getPrivateCode());
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+        }
+
+    packageRepo.save(ptbc);
+    return ResponseEntity.ok(ptbc);
+    }
+
 }

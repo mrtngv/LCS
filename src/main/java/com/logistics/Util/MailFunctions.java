@@ -44,4 +44,29 @@ public class MailFunctions {
 
         return ResponseEntity.ok(null);
     }
+
+    public ResponseEntity<Object> sendRejectedEmail(String senderEmail, String firstName, String code) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper messageBuilder = new MimeMessageHelper(message, true);
+        messageBuilder.setFrom("needylogisticcomapny@gmail.com");
+        messageBuilder.setTo(senderEmail);
+        messageBuilder.setSubject(MailTemplates.senderSubject_rejectedMail);
+        messageBuilder.setText(MailTemplates.buildRejectedMail(firstName, code), true);
+        javaMailSender.send(message);
+
+        return ResponseEntity.ok(null);
+    }
+
+    public ResponseEntity<Object> sendDeliveredEmail(String senderEmail, String firstName, String code) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper messageBuilder = new MimeMessageHelper(message, true);
+        messageBuilder.setFrom("needylogisticcomapny@gmail.com");
+        messageBuilder.setTo(senderEmail);
+        messageBuilder.setSubject(MailTemplates.senderSubject_deliveredMail);
+        messageBuilder.setText(MailTemplates.buildDeliveredMail(firstName, code), true);
+        javaMailSender.send(message);
+
+        return ResponseEntity.ok(null);
+    }
 }
+

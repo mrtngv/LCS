@@ -4,6 +4,8 @@ public class MailTemplates {
 
     public static final String senderSubject_mail = "Успешно регистрирана пратка";
     public static final String receiverSubject_mail  = "Очаквана пратка";
+    public static final String senderSubject_rejectedMail = "Отказана пратка";
+    public static final String senderSubject_deliveredMail = "Успешно пристигнала пратка";
 
     private static String buildFirstPart(String firstName) {
         return mailTemplate1_logo_and_address_to_person + "Здравейте, " +firstName + ",</p>";
@@ -17,6 +19,13 @@ public class MailTemplates {
         return buildFirstPart(firstName) + buildMiddlePartSender(code) + mailTemplate1_end_part;
     }
 
+    public static String buildRejectedMail(String firstName, String code) {
+        return buildFirstPart(firstName) + mailTemplate2_middle_part + " Пратката ви с код " + code + " е отказана от получателя." + mailTemplate1_middle_part_afterCode + mailTemplate1_end_part;
+    }
+
+    public static String buildDeliveredMail(String firstName, String code) {
+        return buildFirstPart(firstName) + mailTemplate2_middle_part + " Пратката Ви с код " + code + " е доставена успешно и приета от получател." + mailTemplate1_middle_part_afterCode + mailTemplate1_end_part;
+    }
 
     public static String buildReceiverMail(String firstName, String code, String city, String address, boolean isOffice, String date) {
         String officeOrPrivateAdress = "личен адрес: град";
@@ -192,4 +201,6 @@ public class MailTemplates {
             "</div>\n" +
             "</body>\n" +
             "</html>";
+
+
 }
