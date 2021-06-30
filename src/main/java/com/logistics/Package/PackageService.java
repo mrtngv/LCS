@@ -70,11 +70,10 @@ public class PackageService {
                         return packageRepo
                                 .findAll()
                                 .stream()
-                                .filter(p -> p.getPackageUsers().contains(user))
-                                .collect(Collectors.toList());
+                                .filter(p -> p.getPackageUsers().contains(user)).sorted().collect(Collectors.toList());
                     }
                 } else {
-                    return packageRepo.findAll();
+                    return packageRepo.findAll().stream().sorted().collect(Collectors.toList());
                 }
             } catch (Exception e) {
                 System.out.println("Not Authenticated User!");
