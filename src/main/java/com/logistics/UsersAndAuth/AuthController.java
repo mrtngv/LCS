@@ -42,6 +42,25 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    public static AboutCompany  aboutCompany = new AboutCompany("Needy Logistics",
+            "Приложението Логистична Компания е задание към курс CSCB025 Практика по програмиране и по реализация на бази данни към Нов Български Университе. \n  Проектът е базиран на Java Spring boot, като се използват: \n Spring Security, Java mail Sender, Jpa, Spring Web и др. \n За База Данни използваме Postgre SQL, а за FrontEnd - Node Js с React и Sap ui5 web компоненти.",
+            "Мартин Георгиев",
+            "Екатерина Герасимова",
+            "Марта Гюрова",
+            "Христина Николова",
+            "Преслава Петкова",
+            "Архитект на приложението | Backend",
+            "UX дизайнер на приложението | FrontEnd ",
+            "DB Management | Backend",
+            "DB Management | Backend",
+            "Login/Register | FrontEnd",
+            "https://github.com/mrtngv/LC-UI",
+            "https://github.com/mrtngv/LCS",
+            "a",
+            "a",
+            "a"
+            );
+
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -225,5 +244,41 @@ public class AuthController {
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
         }
+    }
+
+    @PreAuthorize("hasRole('MODERATOR')")
+    @GetMapping("/statistics/one")
+    public Statistics getUsersPerRole() {
+
+        Role a = roleRepository.findByName(ERoles.ROLE_OFFICE_EMPLOYEE)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        Role b = roleRepository.findByName(ERoles.ROLE_DELIVERY)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        Role c = roleRepository.findByName(ERoles.ROLE_CLIENT)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+
+
+        long one = userRepository.findAll().stream().filter(v -> v.getRoles().contains(a)).count();
+        long two = userRepository.findAll().stream().filter(v -> v.getRoles().contains(b)).count();
+        long three = userRepository.findAll().stream().filter(v -> v.getRoles().contains(c)).count();
+
+        Statistics s = new Statistics();
+        s.setStatistic1(one);
+        s.setStatistic2(two);
+        s.setStatistic3(three);
+        s.setStatistic4(one);
+
+        return s;
+    }
+
+    @GetMapping("/aboutCompany")
+    public AboutCompany getAboutCompany() {
+        return aboutCompany;
+    }
+
+    @PreAuthorize("hasRole('MODERATOR')")
+    @PostMapping("/aboutCompany")
+    public void editAboutCompany(@RequestBody AboutCompany aboutCompanyRequest) {
+       aboutCompany.setName(aboutCompanyRequest.getName());
     }
 }
