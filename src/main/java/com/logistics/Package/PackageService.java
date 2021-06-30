@@ -22,10 +22,7 @@ import javax.mail.MessagingException;
 import java.lang.reflect.Executable;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.DataFormatException;
 
@@ -340,4 +337,32 @@ public class PackageService {
     return ResponseEntity.ok(ptbc);
     }
 
+    public ResponseEntity<?> getAllRelatedStatuses(Long id) {
+        Package p = packageRepo.findById(id).orElse(p = null);
+        if(p==null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseConstants.PACKAGE_NOT_FOUND.getResponseMessage());
+        }
+
+        List<EPackageStatus> statuses;
+        switch(p.getePackageStatus()) {
+            case REQUESTED: statuses = Arrays.asList(EPackageStatus.REGISTERED,EPackageStatus.ANNULLED);break;
+            case REGISTERED:
+                if(p.isFromOffice()){
+                    statuses = Arrays.asList(EPackageStatus.ANNULLED,EPackageStatus.IN_PROCESS_OF_DELIVERING, EPackageStatus.COLLECTED);
+                }else{
+                    statuses = Arrays.asList(EPackageStatus.ANNULLED,EPackageStatus.IN_PROCESS_OF_DELIVERING);
+                }
+                ;break;
+            case COLLECTED: statuses = Arrays.asList(EPackageStatus.ANNULLED,EPackageStatus.IN_PROCESS_OF_DELIVERING);break;
+            case IN_PROCESS_OF_DELIVERING: statuses = Arrays.asList(EPackageStatus.ANNULLED,EPackageStatus.DECLINED,  EPackageStatus.DELIVERED, EPackageStatus.AWAITING_PICK_UP);break;
+            case AWAITING_PICK_UP: statuses = Arrays.asList(EPackageStatus.ANNULLED, EPackageStatus.DECLINED, EPackageStatus.DELIVERED);break;
+            case RETURNED: statuses = Arrays.asList(EPackageStatus.ANNULLED);break;
+            case DELIVERED: statuses = Arrays.asList(EPackageStatus.REGISTERED);break;
+            case DECLINED: statuses = Arrays.asList(EPackageStatus.ANNULLED, EPackageStatus.RETURNED);break;
+            case ANNULLED: statuses = Arrays.asList(EPackageStatus.REGISTERED);break;
+            default:
+                statuses = Arrays.asList(EPackageStatus.REGISTERED);break;
+        }
+        return ResponseEntity.ok(statuses);
+    }
 }
