@@ -29,18 +29,19 @@ public class PackageController {
     }
 
     @PutMapping
-    public ResponseEntity<?> editPackage(@RequestBody EditPackageRequest editPackageRequest){
+    public ResponseEntity<?> editPackage(@RequestBody EditPackageRequest editPackageRequest) {
         return packageService.editPackage(editPackageRequest);
     }
+
     @PreAuthorize("hasRole('MODERATOR') or hasRole('OFFICE_EMPLOYEE') or hasRole('DELIVERY') ")
     @PutMapping("/status")
-    public ResponseEntity<?> editStatus(@RequestBody EditEPackageStatus editEPackageStatus){
+    public ResponseEntity<?> editStatus(@RequestBody EditEPackageStatus editEPackageStatus) {
         return packageService.editStatus(editEPackageStatus);
     }
 
     @PreAuthorize("hasRole('MODERATOR') or hasRole('OFFICE_EMPLOYEE') or hasRole('DELIVERY') ")
     @GetMapping("/status/{packageID}")
-    public ResponseEntity<?> getAllRelatedStatuses(@PathVariable("packageID") Long id){
+    public ResponseEntity<?> getAllRelatedStatuses(@PathVariable("packageID") Long id) {
         return packageService.getAllRelatedStatuses(id);
     }
 
@@ -57,7 +58,7 @@ public class PackageController {
 
     @PreAuthorize("hasRole('MODERATOR')")
     @PostMapping("/revenue")
-    public double getRevenue(@RequestBody RevenueRequest revenueRequest){
+    public double getRevenue(@RequestBody RevenueRequest revenueRequest) {
         return packageService.getRevenue(revenueRequest);
     }
 
@@ -65,24 +66,12 @@ public class PackageController {
     public List<Package> getPackages() {
         return packageService.getPackages();
     }
-//
-//    @GetMapping("/{packageID}")
-//    public Optional<Package> getPackagesById(@PathVariable("packageID") Long id) {
-//        return packageService.getPackagesById(id);
-//    }
-//
-//    @PostMapping
-//    public void addPackage(@RequestBody Package item) {
-//        packageService.addPackage(item);
-//    }
-//
-//    @DeleteMapping("/{packageID}")
-//    public void deletePackage(@PathVariable("packageID") Long id) {
-//        packageService.deletePackage(id);
-//    }
-//
-//    @PutMapping("/{packageID}")
-//    public void updatePackage(@PathVariable("packageID") Long id, @RequestBody String state) {
-//        packageService.updatePackage(id, state);
-//    }
+
+    @PreAuthorize("hasRole('MODERATOR')")
+    @DeleteMapping("/{packageID}")
+    public ResponseEntity<Object>  deletePackage(@PathVariable("packageID") Long id) {
+       return packageService.deletePackage(id);
+    }
+
+
 }

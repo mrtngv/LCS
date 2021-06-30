@@ -367,4 +367,13 @@ public class PackageService {
         }
         return ResponseEntity.ok(statuses);
     }
+
+    public ResponseEntity<Object>  deletePackage(Long id) {
+        Package packagee = packageRepo.findById(id).orElse(packagee = null);
+        if(packagee == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseConstants.PACKAGE_NOT_FOUND.getResponseMessage());
+        }
+        packageRepo.delete(packagee);
+         return ResponseEntity.ok("Package with id: "+ id +" has been deleted successfully!");
+    }
 }
